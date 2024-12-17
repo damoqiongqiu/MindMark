@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mmk</groupId>
+	<artifactId>mind-mark</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<name>MindMark</name>
+	<packaging>pom</packaging>
+	<description>MindMark</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.0</version>
+		<relativePath/>
+	</parent>
+
+	<!--
+		所有 jar 包版本都在这里管理，子模块中不再定义版本
+		Spring 模块版本存在依赖关系，如需修改请自己测试兼容性
+	-->
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- JDK 和 Maven 相关依赖 -->
+		<java.version>18</java.version>
+		<maven.compiler.source>18</maven.compiler.source>
+		<maven.compiler.target>18</maven.compiler.target>
+		<maven.compiler.compilerVersion>18</maven.compiler.compilerVersion>
+		<maven.compiler.plugin.version>3.1</maven.compiler.plugin.version>
+
+		<!-- spring 相关依赖-->
+		<spring.boot.version>3.3.0</spring.boot.version>
+		<spring-ai.version>1.0.0-SNAPSHOT</spring-ai.version>
+
+		<zhipu-ai.version>1.0.0-SNAPSHOT</zhipu-ai.version>
+
+		<!-- mysql-connector 和 druid 之间存在版本依赖关系-->
+		<mysql.connector.version>8.0.33</mysql.connector.version>
+		<druid.version>1.1.14</druid.version>
+
+		<!-- 工具 jar 包-->
+		<bitwalker.version>1.19</bitwalker.version>
+		<kaptcha.version>2.3.2</kaptcha.version>
+		<pagehelper.boot.version>1.2.5</pagehelper.boot.version>
+		<commons.io.version>2.13.0</commons.io.version>
+		<commons.fileupload.version>1.5</commons.fileupload.version>
+		<jsoup.version>1.16.1</jsoup.version>
+		<aspectjrt.version>1.8.13</aspectjrt.version>
+		<junit.version>4.12</junit.version>
+	</properties>
+
+	<modules>
+		<module>mindmark-llm-connector</module>
+		<module>mindmark-etl</module>
+	</modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-properties-migrator</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+    </dependency>
+  </dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.connector.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.alibaba</groupId>
+        <artifactId>druid-spring-boot-starter</artifactId>
+        <version>${druid.version}</version>
+      </dependency>
+
+			<!-- SpringAI 相关依赖 -->
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-bom</artifactId>
+				<version>${spring-ai.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-spring-boot-autoconfigure</artifactId>
+				<version>${spring-ai.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-elasticsearch-store</artifactId>
+				<version>${spring-ai.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-elasticsearch-store-spring-boot-starter</artifactId>
+				<version>${spring-ai.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.ai</groupId>
+				<artifactId>spring-ai-pdf-document-reader</artifactId>
+				<version>${spring-ai.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<!-- spring-ai 模块还没有正式发布，必须从 spring 官方仓库拉取 -->
+  <repositories>
+    <repository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>spring-snapshots</id>
+      <name>Spring Snapshots</name>
+      <url>https://repo.spring.io/snapshot</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+    </repository>
+  </repositories>
+</project>

@@ -1,0 +1,43 @@
+# 暂时还没有用到 MySQL 数据库。
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        druid:
+            master:
+                url: jdbc:mysql://localhost:3307/mind-mark?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+                username: root
+                password: root
+            slave:
+                enabled: false
+                url: 
+                username: 
+                password: 
+            initialSize: 5
+            minIdle: 10
+            maxActive: 20
+            maxWait: 60000
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis: 300000
+            maxEvictableIdleTimeMillis: 900000
+            validationQuery: SELECT 1 FROM DUAL
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            webStatFilter: 
+                enabled: true
+            statViewServlet:
+                enabled: true
+                allow:
+                url-pattern: /druid/*
+                login-username:
+                login-password: 
+            filter:
+                stat:
+                    enabled: true
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true

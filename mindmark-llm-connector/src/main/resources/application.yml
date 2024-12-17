@@ -1,0 +1,39 @@
+application:
+    name: MindMark
+    version: 1.0-SNAPSHOT
+    copyrightYear: 2024
+    demoEnabled: true
+    uploadPath: C:/mindmark/upload      #文件上传目录，请根据自己服务器情况配置
+    addressEnabled: true
+
+server:
+  port: 9090
+
+spring:
+  elasticsearch:
+    uris: http://192.168.0.105:9200/      #请改成你自己的路径
+  ai:
+    zhipuai:
+      api-key: 123456                     #请改成你自己的 key
+      chat:
+        options:
+          temperature: 0.7
+          model: GLM-4-Plus
+        enabled: true
+    vectorstore:
+      elasticsearch:
+        initialize-schema: true
+        index-name: custom-index
+        dimensions: 1024                   #不要修改这个配置，与具体大模型本身的维度参数有关系
+        similarity: cosine
+        batching-strategy: TOKEN_COUNT
+
+logging:
+    level:
+        com.mindmark: TRACE
+        org.springframework: TRACE
+        org.hibernate.SQL: TRACE
+        org.hibernate.type.descriptor.sql: TRACE
+        org.hibernate.engine.QueryParameters: TRACE
+        org.hibernate.engine.query.HQLQueryPlan: TRACE
+        org.hibernate.type.descriptor.sql.BasicBinder: TRACE
