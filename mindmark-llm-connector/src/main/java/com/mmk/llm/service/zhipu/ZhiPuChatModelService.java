@@ -18,6 +18,10 @@ import reactor.core.publisher.Flux;
 @AllArgsConstructor
 public class ZhiPuChatModelService implements ChatModelService {
 
+    /**
+     * 智谱提供的文本嵌入模型
+     * 输入和输出长度都有长度限制，参考官方文档：https://bigmodel.cn/dev/api/vector/embedding
+     */
     private ZhiPuAiChatModel chatModel;
 
     private final ZhiPuConfig zpConfig;

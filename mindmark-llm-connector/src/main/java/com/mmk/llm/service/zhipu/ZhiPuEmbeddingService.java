@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.elasticsearch.ElasticsearchVectorStore;
-import org.springframework.ai.zhipuai.ZhiPuAiEmbeddingModel;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,19 +20,13 @@ import java.util.Map;
 @AllArgsConstructor
 public class ZhiPuEmbeddingService implements EmbeddingService {
 
-    /**
-     * 智谱提供的文本嵌入模型
-     * 输入和输出长度都有长度限制，参考官方文档：https://bigmodel.cn/dev/api/vector/embedding
-     */
-    private final ZhiPuAiEmbeddingModel embeddingModel;
-
     private final ChatClient chatClient;
 
     /**
-     * Elasticsearch 向量数据库
-     * TODO: 让用户上传文件，然后解析并写入 ElasticSearch 。
+     * TODO: 让用户上传文件，然后解析并写入向量数据库 。
+     * TODO: 支持同时使用多种向量数据库。
      */
-    private final ElasticsearchVectorStore vectorStore;
+    private final VectorStore vectorStore;
 
     /**
      * 根据嵌入的文本进行查询
@@ -53,7 +46,7 @@ public class ZhiPuEmbeddingService implements EmbeddingService {
         // 添加到 Vector Store
         vectorStore.add(documents);
 
-        // 测试查询
+        // 查询向量库
         List<Document> searchResults = vectorStore.similaritySearch(SearchRequest.query(msg).withTopK(5));
         List<String> contentList = searchResults.stream().map(Document::getContent).toList();
         String promptContent = String.join(" ", contentList);
