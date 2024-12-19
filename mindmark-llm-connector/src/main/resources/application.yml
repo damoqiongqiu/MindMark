@@ -13,18 +13,22 @@ spring:
   elasticsearch:
     uris: http://192.168.0.105:9200/      #请改成你自己的路径
   ai:
-    zhipuai:
+    zhipuai:   #智谱大模型
       api-key:                      #请改成你自己的 key
       chat:
         options:
           temperature: 0.7
           model: GLM-4-Plus
         enabled: true
+      embedding:
+        options:
+          model: embedding-3               #嵌入模型的向量维度需要和下面 elasticsearch 的维度相同，否则无法写入数据
+        enabled: true
     vectorstore:
       elasticsearch:
         initialize-schema: true
         index-name: custom-index
-        dimensions: 1024                   #不要修改这个配置，与具体大模型本身的维度参数有关系
+        dimensions: 2048                   #不要修改这个配置，与具体大模型本身的维度参数有关系
         similarity: cosine
         batching-strategy: TOKEN_COUNT
 

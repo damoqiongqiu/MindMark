@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 /**
  * @author 大漠穷秋
  * 嵌入模型控制器
@@ -27,7 +29,7 @@ public class EmbeddingController {
      * @return
      */
     @GetMapping("/embedding")
-    public String embed(@RequestParam(value = "msg", defaultValue = "Spring") String msg) {
+    public String embed(@RequestParam(value = "msg", defaultValue = "DRDS") String msg) throws IOException, InterruptedException {
         return this.embeddingService.embed(msg);
     }
 }
