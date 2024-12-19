@@ -21,7 +21,7 @@ import java.util.Map;
 public class ZhiPuEmbeddingService implements EmbeddingService {
 
     private final ChatClient chatClient;
-
+    
     /**
      * TODO: 让用户上传文件，然后解析并写入向量数据库 。
      * TODO: 支持同时使用多种向量数据库。
@@ -44,6 +44,11 @@ public class ZhiPuEmbeddingService implements EmbeddingService {
         );
 
         // 添加到 Vector Store
+        // 智谱大模型文档： https://bigmodel.cn/dev/api/vector/embedding
+        // 输入需要向量化的文本，支持字符串数组。
+        // embedding-2 的单条请求最多支持 512 个Tokens，数组总长度不得超过8K；
+        // embedding-3 的单条请求最多支持 2048 个Tokens，数组总长度不得超过8K；
+        // 且数组最大不得超过 64 条。
         vectorStore.add(documents);
 
         // 查询向量库
