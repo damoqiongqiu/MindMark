@@ -59,8 +59,8 @@
 	</properties>
 
 	<modules>
-		<module>mindmark-llm-connector</module>
 		<module>mindmark-etl</module>
+		<module>mindmark-llm-connector</module>
 	</modules>
 
   <dependencies>
@@ -91,7 +91,50 @@
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
     </dependency>
-  </dependencies>
+
+	  <!-- SpringAI 相关依赖 -->
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-bom</artifactId>
+		  <version>${spring-ai.version}</version>
+		  <type>pom</type>
+		  <scope>import</scope>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-spring-boot-autoconfigure</artifactId>
+		  <version>${spring-ai.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-elasticsearch-store</artifactId>
+		  <version>${spring-ai.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-elasticsearch-store-spring-boot-starter</artifactId>
+		  <version>${spring-ai.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-pdf-document-reader</artifactId>
+		  <version>${spring-ai.version}</version>
+	  </dependency>
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-tika-document-reader</artifactId>
+		  <version>${spring-ai.version}</version>
+	  </dependency>
+	  <!--
+        智谱智能提供的大模型 API ，
+        https://open.bigmodel.cn/
+      -->
+	  <dependency>
+		  <groupId>org.springframework.ai</groupId>
+		  <artifactId>spring-ai-zhipuai-spring-boot-starter</artifactId>
+		  <version>${zhipu-ai.version}</version>
+	  </dependency>
+  	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
@@ -106,35 +149,6 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>${druid.version}</version>
 		  </dependency>
-
-			<!-- SpringAI 相关依赖 -->
-			<dependency>
-				<groupId>org.springframework.ai</groupId>
-				<artifactId>spring-ai-bom</artifactId>
-				<version>${spring-ai.version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.ai</groupId>
-				<artifactId>spring-ai-spring-boot-autoconfigure</artifactId>
-				<version>${spring-ai.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.ai</groupId>
-				<artifactId>spring-ai-elasticsearch-store</artifactId>
-				<version>${spring-ai.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.ai</groupId>
-				<artifactId>spring-ai-elasticsearch-store-spring-boot-starter</artifactId>
-				<version>${spring-ai.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.ai</groupId>
-				<artifactId>spring-ai-pdf-document-reader</artifactId>
-				<version>${spring-ai.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
