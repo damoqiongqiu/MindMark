@@ -37,7 +37,11 @@
 		<spring.boot.version>3.3.0</spring.boot.version>
 		<spring-ai.version>1.0.0-SNAPSHOT</spring-ai.version>
 
+		<!-- 智谱大模型版本号 -->
 		<zhipu-ai.version>1.0.0-SNAPSHOT</zhipu-ai.version>
+
+		<!-- 本项目自己的版本号 -->
+		<mindmark.version>1.0.0-SNAPSHOT</mindmark.version>
 
 		<!-- mysql-connector 和 druid 之间存在版本依赖关系-->
 		<mysql.connector.version>8.0.33</mysql.connector.version>

@@ -17,7 +17,14 @@
 	</parent>
 
 	<dependencies>
-		<!-- SpringAI 相关依赖 -->
+      <!-- 依赖 mindmark-etl 模块 -->
+      <dependency>
+          <groupId>com.mmk</groupId>
+          <artifactId>mindmark-etl</artifactId>
+          <version>${mindmark.version}</version>
+      </dependency>
+
+      <!-- SpringAI 相关依赖 -->
       <dependency>
         <groupId>org.springframework.ai</groupId>
         <artifactId>spring-ai-bom</artifactId>
@@ -52,7 +59,7 @@
       </dependency>
       <!--
         智谱智能提供的大模型 API ，
-        https://open.bigmodel.cn/		
+        https://open.bigmodel.cn/
       -->
       <dependency>
         <groupId>org.springframework.ai</groupId>
