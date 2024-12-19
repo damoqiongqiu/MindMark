@@ -1,10 +1,11 @@
 application:
     name: MindMark
-    version: 1.0-SNAPSHOT
-    copyrightYear: 2024
-    demoEnabled: true
-    uploadPath: C:/mindmark/upload      #文件上传目录，请根据自己服务器情况配置
-    addressEnabled: true
+    version: 1.0.0-SNAPSHOT
+    copyright-year: 2024
+    demo-enabled: true
+    address-enabled: true
+    upload-path: C:/mindmark/upload       #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作
+    scan-interval: 60000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
 
 server:
   port: 9090
