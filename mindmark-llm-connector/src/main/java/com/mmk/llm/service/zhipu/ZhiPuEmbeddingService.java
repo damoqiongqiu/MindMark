@@ -40,8 +40,11 @@ public class ZhiPuEmbeddingService implements EmbeddingService {
     public String embed(String msg) throws IOException, InterruptedException {
         log.debug("embedding..." + msg);
 
-        //嵌入一些 PDF 文件作为测试数据
-        List<Document> documents= this.etlService.readFileList("./pdf/*.pdf");
+        //嵌入一些文件作为测试数据
+        List<Document> documents= this.etlService.readFileList("files/*.*");
+        //TODO: FIXME 提取摘要和关键词的处理速度非常慢
+        documents=this.etlService.keywordDocuments(documents);
+        documents=this.etlService.summaryDocuments(documents);
         documents=this.etlService.splitDocument(documents);
         documents=this.etlService.saveDocument(documents);
 

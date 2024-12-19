@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.reader.pdf.PagePdfDocumentReader;
+import org.springframework.ai.reader.tika.TikaDocumentReader;
 import org.springframework.ai.transformer.KeywordMetadataEnricher;
 import org.springframework.ai.transformer.SummaryMetadataEnricher;
-import org.springframework.ai.transformer.SummaryMetadataEnricher.SummaryType;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.core.io.Resource;
@@ -37,7 +36,7 @@ public class EtlService {
     public final VectorStore vectorStore;
 
     /**
-     * 根据通配符表达式，读取某个某种的文件列表，例如： "./pdf/*.pdf" ，将会读取 pdf 目录下的所有 .pdf 文件。
+     * 根据通配符表达式，读取某个某种的文件列表，例如： "./files/*.files" ，将会读取 files 目录下的所有 .files 文件。
      * TODO: 自动检测文件类型并进行解析，文件解析器改成工厂模式
      * TODO: 文件解析时间一般都比较长，需要改成异步模式在后台进程处理
      * TODO: 重构代码到 mindmark-etl 模块中
@@ -49,32 +48,20 @@ public class EtlService {
      * @return
      * @throws IOException
      */
-    public  List<Document> readFileList(String locationPattern)throws IOException {
+    public List<Document> readFileList(String locationPattern) throws IOException {
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         Resource[] resources = resolver.getResources(locationPattern);
         List<Document> allDocs = new ArrayList<>();
-        for (Resource resource : resources) allDocs.addAll(this.readFile(resource));
+
+        for (Resource resource : resources) {
+            //全部使用 Tika 读取文件， Tika 支持大量的文件格式
+            //https://tika.apache.org/3.0.0/formats.html
+            //TODO: FIXME 文件的内容可能为空或无法解析
+            TikaDocumentReader tikaReader = new TikaDocumentReader(resource);
+            allDocs.addAll(tikaReader.read());
+        }
+
         return allDocs;
-    }
-
-    public List<Document> readFile(String filePath) {
-        log.info("Processing File: {}", filePath);
-        ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        Resource resource= resolver.getResource(filePath);
-        return this.readFile(resource);
-    }
-
-    public List<Document> readFile(Resource resource) {
-        log.info("Processing File: {}", resource.getFilename());
-
-        //TODO: 自动匹配文件类型，然后使用对应的 FileParser 类型进行读取
-
-        PagePdfDocumentReader pdfReader = new PagePdfDocumentReader(resource);
-        List<Document> docs=pdfReader.read();
-
-        //自动为读取到的内容添加摘要和关键词
-        docs = summaryDocuments(keywordDocuments(docs));
-        return docs;
     }
 
     /**
@@ -82,9 +69,9 @@ public class EtlService {
      * @param documents
      * @return
      */
-    private List<Document> summaryDocuments(List<Document> documents) {
-        log.info("提取摘要...");
-        SummaryMetadataEnricher summaryEnricher =  new SummaryMetadataEnricher(chatModel,List.of(SummaryType.CURRENT));
+    public List<Document> summaryDocuments(List<Document> documents) {
+        log.info("开始提取摘要...");
+        SummaryMetadataEnricher summaryEnricher =  new SummaryMetadataEnricher(chatModel,List.of(SummaryMetadataEnricher.SummaryType.CURRENT));
         return summaryEnricher.apply(documents);
     }
 
@@ -93,8 +80,8 @@ public class EtlService {
      * @param documents
      * @return
      */
-    private List<Document> keywordDocuments(List<Document> documents) {
-        log.info("提取关键词...");
+    public List<Document> keywordDocuments(List<Document> documents) {
+        log.info("开始提取关键词...");
         KeywordMetadataEnricher keywordEnricher = new KeywordMetadataEnricher(chatModel, 50);
         return keywordEnricher.apply(documents);
     }
