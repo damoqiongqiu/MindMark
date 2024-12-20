@@ -45,7 +45,7 @@
 
 		<!-- mysql-connector 和 druid 之间存在版本依赖关系-->
 		<mysql.connector.version>8.0.33</mysql.connector.version>
-		<druid.version>1.1.14</druid.version>
+		<druid.version>1.2.21</druid.version>
 
 		<!-- 工具 jar 包-->
 		<bitwalker.version>1.19</bitwalker.version>
@@ -126,31 +126,15 @@
 		  <version>${spring-ai.version}</version>
 	  </dependency>
 	  <!--
-        智谱智能提供的大模型 API ，
-        https://open.bigmodel.cn/
-      -->
+		智谱智能提供的大模型 API ，
+		https://open.bigmodel.cn/
+	  -->
 	  <dependency>
 		  <groupId>org.springframework.ai</groupId>
 		  <artifactId>spring-ai-zhipuai-spring-boot-starter</artifactId>
 		  <version>${zhipu-ai.version}</version>
 	  </dependency>
-  	</dependencies>
-
-	<dependencyManagement>
-		<dependencies>
-		  <dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>${mysql.connector.version}</version>
-		  </dependency>
-
-		  <dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>druid-spring-boot-starter</artifactId>
-			<version>${druid.version}</version>
-		  </dependency>
-		</dependencies>
-	</dependencyManagement>
+  </dependencies>
 
 	<build>
 		<plugins>

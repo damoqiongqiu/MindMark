@@ -9,34 +9,21 @@ application:
       file-path: C:/mindmark/upload         #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作
       scan-interval: 30000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
     watch-mysql:
-      enabled: true                             # 是否开启数据库监控功能，开启后会定时扫描数据库中的数据，并进行嵌入操作
-      scan-interval: 60000                      # 扫描间隔时间，单位毫秒
-      databases: # 配置多个数据库的监控
-        - db-name: nicefish-spring-boot-test
-          tables:
-            - nicefish_cms_post
-          scan-interval: 60000
-        - db-name: another-database
-          tables:
-            - another_table1
-            - another_table2
-            - another_table3
-          scan-interval: 30000
-        - db-name: third-database
-          tables:
-            - table_a
-            - table_b
-          scan-interval: 90000
+      enabled: true
+      scan-interval: 60000
+      table: nicefish_cms_post
 
 server:
   port: 9090
 
 spring:
+  profiles:
+    active: druid
   elasticsearch:
     uris: http://192.168.0.105:9200/      #请改成你自己的路径
   ai:
-    zhipuai:   #智谱大模型
-      api-key:   #请改成你自己的 key
+    zhipuai:    #智谱大模型
+      api-key:  #请改成你自己的 key
       chat:
         options:
           temperature: 0.7

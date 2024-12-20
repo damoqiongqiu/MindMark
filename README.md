@@ -89,7 +89,7 @@ TODO:文档补充完整
 ### 3. 启动项目
 
 - 拉取本项目
-- 修改配置文件
+- 修改配置文件（application.yml 和 application-druid.yml 中有一些配置项需要改成你自己的配置）
 - 启动 MindMarkApplication.java
 
 **备注：在启动和运行时，如果看到异常信息可以无视，因为日志级别配置成了 TRACE ，只要能够正常访问即可。**
