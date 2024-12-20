@@ -1,18 +1,45 @@
 package com.mmk.etl;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 @Configuration
 @ConfigurationProperties(prefix = "application")
+@Getter
+@Setter
 public class ApplicationConfig {
-    private String uploadPath;
 
-    public String getUploadPath() {
-        return uploadPath;
+    // watch-file 配置
+    private WatchFileConfig watchFile;
+
+    // watch-mysql 配置
+    private WatchMysqlConfig watchMysql;
+
+    @Getter
+    @Setter
+    public static class WatchFileConfig {
+        private boolean enabled;
+        private String filePath;
+        private long scanInterval;
     }
 
-    public void setUploadPath(String uploadPath) {
-        this.uploadPath = uploadPath;
+    @Getter
+    @Setter
+    public static class WatchMysqlConfig {
+        private boolean enabled;
+        private List<MysqlDatabaseConfig> databases;
+        private long scanInterval;
+
+        @Getter
+        @Setter
+        public static class MysqlDatabaseConfig {
+            private String dbName;
+            private List<String> tables;
+            private long scanInterval;
+        }
     }
 }

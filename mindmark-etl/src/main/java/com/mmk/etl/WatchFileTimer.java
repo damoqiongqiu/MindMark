@@ -16,16 +16,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 定时任务，当检测到新的文件时，自动执行嵌入，并存储到向量数据库。
+ * TODO: 数据脱敏，防止信息泄露
  * @author 大漠穷秋
  */
 @Slf4j
 @Service
 @AllArgsConstructor
-public class FileMonitoringService {
+public class WatchFileTimer {
 
-    private EtlService etlService;
+    private ApplicationConfig appConfig;
 
-    private final ApplicationConfig applicationConfig;
+    private FileService fileService;
 
     // 记录已处理文件名，避免重复处理
     // TODO: 把已经处理过的文件记录到数据库
@@ -35,16 +36,17 @@ public class FileMonitoringService {
      * 定时任务：扫描目录并处理新文件
      * TODO: 监控任意层级结构，包括子目录
      */
-    @Scheduled(fixedRateString = "${application.scan-interval}")
-    public void monitorAndProcessFiles() throws MalformedURLException, InterruptedException {
+    @Scheduled(fixedRateString = "${application.watch-file.scan-interval}")
+    public void watchAndProcessFiles() throws MalformedURLException, InterruptedException {
 
         log.debug("-----------------------------------------");
-        log.debug("开始扫描目录: " + applicationConfig.getUploadPath());
+        log.debug("Watching file" +
+                ": " + appConfig.getWatchFile().getFilePath());
         log.debug("-----------------------------------------");
 
-        File rootDir = new File(applicationConfig.getUploadPath());
+        File rootDir = new File(appConfig.getWatchFile().getFilePath());
         if (!rootDir.exists() || !rootDir.isDirectory()) {
-            log.warn("监控目录不存在: {}", applicationConfig.getUploadPath());
+            log.warn("监控目录不存在: {}", appConfig.getWatchFile().getFilePath());
             return;
         }
 
@@ -68,13 +70,13 @@ public class FileMonitoringService {
                 log.debug("开始处理文件: " + file.getAbsolutePath());
 
                 Resource resource = new UrlResource(file.toURI());
-                List<Document> documents = this.etlService.readFile(resource);
+                List<Document> documents = this.fileService.readFile(resource);
 
                 // NOTE: 提取摘要和关键词的处理速度非常慢
-                documents = this.etlService.keywordDocuments(documents);
-                documents = this.etlService.summaryDocuments(documents);
-                documents = this.etlService.splitDocument(documents);
-                documents = this.etlService.saveDocument(documents);
+                documents = this.fileService.keywordDocuments(documents);
+                documents = this.fileService.summaryDocuments(documents);
+                documents = this.fileService.splitDocument(documents);
+                documents = this.fileService.saveDocument(documents);
 
                 // 记录已经处理过的文件
                 // TODO: 对文件进行 Hash 然后记录

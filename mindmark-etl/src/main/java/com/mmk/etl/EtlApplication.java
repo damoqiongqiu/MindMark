@@ -7,6 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
+ * TODO:定时任务似乎应该作为一个独立的模块启动
  * @author 大漠穷秋
  */
 @Slf4j

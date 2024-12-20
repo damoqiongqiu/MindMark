@@ -25,7 +25,7 @@ import java.util.List;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class EtlService {
+public class FileService {
 
     private ChatModel chatModel;
 

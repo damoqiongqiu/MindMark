@@ -92,9 +92,17 @@ TODO:文档补充完整
 - 修改配置文件
 - 启动 MindMarkApplication.java
 
+**备注：在启动和运行时，如果看到异常信息可以无视，因为日志级别配置成了 TRACE ，只要能够正常访问即可。**
+
 TODO:文档补充完整
 
 ### 4.准备数据
+
+找一些文件，放到被监控的目录中，定时任务会自动扫描并解析这些文件的内容，然后进行向量化，并存储到 ElasticSearch 中去。
+
+监控目录的配置项是 application.yml 的 watch-file.file-path 。
+
+目前支持的文件格式有：pdf/txt/markdown/doc/docx/ppt/pptx/xls/xlsx/json 。
 
 TODO:文档补充完整
 
