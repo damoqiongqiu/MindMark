@@ -5,7 +5,7 @@ application:
     demo-enabled: true
     address-enabled: true
     upload-path: C:/mindmark/upload       #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作
-    scan-interval: 60000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
+    scan-interval: 30000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
 
 server:
   port: 9090
@@ -15,7 +15,7 @@ spring:
     uris: http://192.168.0.105:9200/      #请改成你自己的路径
   ai:
     zhipuai:   #智谱大模型
-      api-key:  #请改成你自己的 key
+      api-key:   #请改成你自己的 key
       chat:
         options:
           temperature: 0.7
@@ -28,7 +28,7 @@ spring:
     vectorstore:
       elasticsearch:
         initialize-schema: true
-        index-name: custom-index
+        index-name: custom-index           #TODO: 实现多租户模式，为每一个用户建立独立的索引
         dimensions: 2048                   #不要修改这个配置，与具体大模型本身的维度参数有关系
         similarity: cosine
         batching-strategy: TOKEN_COUNT

@@ -33,44 +33,54 @@ public class FileMonitoringService {
 
     /**
      * 定时任务：扫描目录并处理新文件
+     * TODO: 监控任意层级结构，包括子目录
      */
     @Scheduled(fixedRateString = "${application.scan-interval}")
     public void monitorAndProcessFiles() throws MalformedURLException, InterruptedException {
 
         log.debug("-----------------------------------------");
-        log.debug("开始扫描目录: "+applicationConfig.getUploadPath());
+        log.debug("开始扫描目录: " + applicationConfig.getUploadPath());
         log.debug("-----------------------------------------");
 
-        File dir = new File(applicationConfig.getUploadPath());
-        if (!dir.exists() || !dir.isDirectory()) {
+        File rootDir = new File(applicationConfig.getUploadPath());
+        if (!rootDir.exists() || !rootDir.isDirectory()) {
             log.warn("监控目录不存在: {}", applicationConfig.getUploadPath());
             return;
         }
 
+        // 扫描所有子目录
+        scanAndProcessFilesRecursively(rootDir);
+    }
+
+    private void scanAndProcessFilesRecursively(File dir) throws MalformedURLException, InterruptedException {
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
-            log.info("监控目录为空: {}", applicationConfig.getUploadPath());
+            log.info("目录为空: {}", dir.getAbsolutePath());
             return;
         }
 
         for (File file : files) {
-            if (file.isFile() && !processedFiles.contains(file.getName())) {
-
-                log.debug("开始处理文件: "+file.getName());
+            if (file.isDirectory()) {
+                // 递归处理子目录
+                scanAndProcessFilesRecursively(file);
+            } else if (file.isFile() && !processedFiles.contains(file.getName())) {
+                // 处理文件
+                log.debug("开始处理文件: " + file.getAbsolutePath());
 
                 Resource resource = new UrlResource(file.toURI());
-                List<Document> documents= this.etlService.readFile(resource);
+                List<Document> documents = this.etlService.readFile(resource);
 
-                //NOTE: 提取摘要和关键词的处理速度非常慢
-                documents=this.etlService.keywordDocuments(documents);
-                documents=this.etlService.summaryDocuments(documents);
-                documents=this.etlService.splitDocument(documents);
-                documents=this.etlService.saveDocument(documents);
+                // NOTE: 提取摘要和关键词的处理速度非常慢
+                documents = this.etlService.keywordDocuments(documents);
+                documents = this.etlService.summaryDocuments(documents);
+                documents = this.etlService.splitDocument(documents);
+                documents = this.etlService.saveDocument(documents);
 
-                //记录已经处理过的文件
-                //TODO: 对文件进行 Hash 然后记录
+                // 记录已经处理过的文件
+                // TODO: 对文件进行 Hash 然后记录
                 processedFiles.add(file.getName());
             }
         }
     }
+
 }
