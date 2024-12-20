@@ -20,7 +20,6 @@ import java.util.List;
 public class FileService extends EtlService{
 
     /**
-     * 根据通配符表达式，读取某个某种的文件列表，例如： "./files/*.files" ，将会读取 files 目录下的所有 .files 文件。
      * TODO: 测试，如果 PDF 文件体积非常大，例如 500M ，是否会出问题？
      * TODO: 统一异常处理
      *

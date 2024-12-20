@@ -63,9 +63,7 @@ public class EtlService {
     public List<Document> saveDocument(List<Document> documents) throws InterruptedException {
         log.debug("开始写入...");
 
-        // 测试：向 ElasticSearch 中插入一些测试数据
         // 智谱大模型文档： https://bigmodel.cn/dev/api/vector/embedding
-        // 输入需要向量化的文本，支持字符串数组。
         // embedding-2 的单条请求最多支持 512 个Tokens，数组总长度不得超过8K；
         // embedding-3 的单条请求最多支持 2048 个Tokens，数组总长度不得超过8K；
         // 且数组最大不得超过 64 条。
