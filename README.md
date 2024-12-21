@@ -104,6 +104,8 @@ TODO:文档补充完整
 
 目前支持的文件格式有：pdf/txt/markdown/doc/docx/ppt/pptx/xls/xlsx/json 。
 
+测试数据库用的 SQL 脚本位于 /docs 目录下，导入到 MySQL 中即可。
+
 TODO:文档补充完整
 
 ## 5.测试接口
