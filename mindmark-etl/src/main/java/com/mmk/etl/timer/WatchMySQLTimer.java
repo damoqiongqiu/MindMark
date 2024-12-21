@@ -1,6 +1,6 @@
 package com.mmk.etl.timer;
 
-import com.mmk.etl.ApplicationConfig;
+import com.mmk.etl.EtlConfig;
 import com.mmk.etl.service.MySQLService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class WatchMySQLTimer {
-    private ApplicationConfig appConfig;
+    private EtlConfig appConfig;
 
     private MySQLService mySQLService;
 

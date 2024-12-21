@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "application")
 @Getter
 @Setter
-public class ApplicationConfig {
+public class EtlConfig {
 
     // watch-file 配置
     private WatchFileConfig watchFile;

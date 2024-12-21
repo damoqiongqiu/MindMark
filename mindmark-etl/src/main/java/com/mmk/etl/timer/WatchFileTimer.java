@@ -1,6 +1,6 @@
 package com.mmk.etl.timer;
 
-import com.mmk.etl.ApplicationConfig;
+import com.mmk.etl.EtlConfig;
 import com.mmk.etl.service.FileService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @AllArgsConstructor
 public class WatchFileTimer {
 
-    private ApplicationConfig appConfig;
+    private EtlConfig appConfig;
 
     private FileService fileService;
 
