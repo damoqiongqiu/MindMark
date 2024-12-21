@@ -31,13 +31,13 @@ spring:
         enabled: true
       embedding:
         options:
-          model: embedding-3               #嵌入模型的向量维度需要和下面 elasticsearch 的维度相同，否则无法写入数据
+          model: embedding-3            #嵌入模型的向量维度需要和下面 elasticsearch 的维度相同，否则无法写入数据
         enabled: true
     vectorstore:
       elasticsearch:
         initialize-schema: true
-        index-name: custom-index           #TODO: 实现多租户模式，为每一个用户建立独立的索引
-        dimensions: 2048                   #不要修改这个配置，与具体大模型本身的维度参数有关系
+        index-name: mind-mark           #TODO: 实现多租户模式，为每一个用户建立独立的索引
+        dimensions: 2048                #不要修改这个配置，与具体大模型本身的维度参数有关系
         similarity: cosine
         batching-strategy: TOKEN_COUNT
 

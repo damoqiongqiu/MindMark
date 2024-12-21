@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 定时任务，当检测到新的文件时，自动执行嵌入，并存储到向量数据库。
@@ -34,28 +35,40 @@ public class WatchFileTimer {
     // TODO: 把已经处理过的文件记录到数据库
     private final Set<String> processedFiles = ConcurrentHashMap.newKeySet();
 
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
     /**
      * 定时任务：扫描目录并处理新文件
      * TODO: 监控任意层级结构，包括子目录
      */
     @Scheduled(fixedRateString = "${application.watch-file.scan-interval}")
     public void watchAndProcessFiles() throws MalformedURLException, InterruptedException {
-
-        log.debug("-----------------------------------------");
-        log.debug("Watching file" +
-                ": " + appConfig.getWatchFile().getFilePath());
-        log.debug("-----------------------------------------");
-
-        File rootDir = new File(appConfig.getWatchFile().getFilePath());
-        if (!rootDir.exists() || !rootDir.isDirectory()) {
-            log.warn("监控目录不存在: {}", appConfig.getWatchFile().getFilePath());
+        if (!isRunning.compareAndSet(false, true)) {
             return;
         }
 
-        // 扫描所有子目录
-        scanAndProcessFilesRecursively(rootDir);
+        log.debug("----------------------------------------------------------------------------------");
+        log.debug("Watching file: "+appConfig.getWatchFile().getFilePath());
+        log.debug("----------------------------------------------------------------------------------");
+
+        try {
+            File rootDir = new File(appConfig.getWatchFile().getFilePath());
+            if (!rootDir.exists() || !rootDir.isDirectory()) {
+                log.warn("监控目录不存在: {}", appConfig.getWatchFile().getFilePath());
+                return;
+            }
+            scanAndProcessFilesRecursively(rootDir);
+        } finally {
+            isRunning.set(false);
+        }
     }
 
+    /**
+     * 递归处理子目录
+     * @param dir
+     * @throws MalformedURLException
+     * @throws InterruptedException
+     */
     private void scanAndProcessFilesRecursively(File dir) throws MalformedURLException, InterruptedException {
         File[] files = dir.listFiles();
         if (files == null || files.length == 0) {
@@ -65,10 +78,8 @@ public class WatchFileTimer {
 
         for (File file : files) {
             if (file.isDirectory()) {
-                // 递归处理子目录
                 scanAndProcessFilesRecursively(file);
             } else if (file.isFile() && !processedFiles.contains(file.getName())) {
-                // 处理文件
                 log.debug("开始处理文件: " + file.getAbsolutePath());
 
                 Resource resource = new UrlResource(file.toURI());

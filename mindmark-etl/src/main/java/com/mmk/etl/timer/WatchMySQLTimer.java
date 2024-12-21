@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 定时任务，把数据库中的数据进行向量化。
@@ -28,56 +29,66 @@ public class WatchMySQLTimer {
 
     private MySQLService mySQLService;
 
+    private final AtomicBoolean isRunning = new AtomicBoolean(false);
+
     /**
      * 定时任务：扫描指定的表，把表中的数据向量化。
      */
     @Scheduled(fixedRateString = "${application.watch-mysql.scan-interval}")
     public void watchAndProcessTables() throws InterruptedException {
-        log.debug("Watching mysql database: ");
-
-        String watchTable=appConfig.getWatchMysql().getTable();
-        List<Map<String, Object>> dataList =mySQLService.executeQuery(watchTable);
-
-        if (dataList == null || dataList.isEmpty()) {
-            log.warn("No data found in table: {}", watchTable);
+        if (!isRunning.compareAndSet(false, true)) {
             return;
         }
 
-        log.debug("Fetched {} records from table: {}", dataList.size(), watchTable);
+        log.debug("Watching mysql database: ");
 
-        List<String> allResultString=new ArrayList<>();
-        for (Map<String, Object> row : dataList) {
-            StringBuilder rowString = new StringBuilder();
-            for (Map.Entry<String, Object> entry : row.entrySet()) {
-                String columnName = entry.getKey();
-                Object columnValue = entry.getValue();
-                rowString.append(columnName)
-                        .append(": ")
-                        .append(columnValue != null ? columnValue.toString() : "NULL")
-                        .append(", ");
+        try {
+            String watchTable=appConfig.getWatchMysql().getTable();
+            List<Map<String, Object>> dataList =mySQLService.executeQuery(watchTable);
+
+            if (dataList == null || dataList.isEmpty()) {
+                log.warn("No data found in table: {}", watchTable);
+                return;
             }
 
-            if (rowString.length() > 0) {
-                rowString.setLength(rowString.length() - 2);
+            log.debug("Fetched {} records from table: {}", dataList.size(), watchTable);
+
+            List<String> allResultString=new ArrayList<>();
+            for (Map<String, Object> row : dataList) {
+                StringBuilder rowString = new StringBuilder();
+                for (Map.Entry<String, Object> entry : row.entrySet()) {
+                    String columnName = entry.getKey();
+                    Object columnValue = entry.getValue();
+                    rowString.append(columnName)
+                            .append(": ")
+                            .append(columnValue != null ? columnValue.toString() : "NULL")
+                            .append(", ");
+                }
+
+                if (rowString.length() > 0) {
+                    rowString.setLength(rowString.length() - 2);
+                }
+
+                log.debug("Row data: {}", rowString.toString());
+
+                allResultString.add(rowString.toString());
             }
 
-            log.debug("Row data: {}", rowString.toString());
+            log.debug("Finished processing {} records.", dataList.size());
+            log.debug(String.join("", allResultString));
 
-            allResultString.add(rowString.toString());
+            //TODO: 把元数据写入 doc ，如数据库名、表名
+            Document doc = new Document(String.join("", allResultString));
+            List<Document> documents = new ArrayList<>();
+            documents.add(doc);
+            // NOTE: 提取摘要和关键词的处理速度非常慢
+            documents = this.mySQLService.keywordDocuments(documents);
+            documents = this.mySQLService.summaryDocuments(documents);
+            documents = this.mySQLService.splitDocument(documents);
+            documents = this.mySQLService.saveDocument(documents);
+        } finally {
+            isRunning.set(false);
         }
-
-        log.debug("Finished processing {} records.", dataList.size());
-        log.debug(String.join("", allResultString));
-
-        //TODO: 把元数据写入 doc ，如数据库名、表名
-        Document doc = new Document(String.join("", allResultString));
-        List<Document> documents = new ArrayList<>();
-        documents.add(doc);
-        // NOTE: 提取摘要和关键词的处理速度非常慢
-        documents = this.mySQLService.keywordDocuments(documents);
-        documents = this.mySQLService.summaryDocuments(documents);
-        documents = this.mySQLService.splitDocument(documents);
-        documents = this.mySQLService.saveDocument(documents);
     }
 
 }
