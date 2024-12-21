@@ -80,7 +80,7 @@ docker logs -f kibana
 
 其它安装配置方式请参考 ElasticSearch 官方文档。
 
-### 2.3 MariaDB 安装配置（可选）
+### 2.3 MariaDB 安装配置
 
 省略 MariaDB 安装配置过程， MySQL 也可以。
 
@@ -118,12 +118,16 @@ TODO:文档补充完整
 
 TODO:文档补充完整
 
-## 7.License
+## 7.参考资源
+
+SpringAI 官方文档：https://docs.spring.io/spring-ai/reference/index.html
+
+## 8.License
 
 MIT
 
 （补充声明：您可以随意使用此项目，但是本人不对您使用此项目造成的任何损失承担责任。）
 
-## 8.联系我
+## 9.联系我
 
 VX: lanxinshuma
