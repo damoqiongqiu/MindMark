@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("llm")
+@RequestMapping("/mind-mark")
 public class ImgModelController {
 
     private ImgModelService imgModelService;

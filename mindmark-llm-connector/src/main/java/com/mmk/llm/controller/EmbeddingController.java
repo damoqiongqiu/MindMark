@@ -18,7 +18,7 @@ import java.io.IOException;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("llm")
+@RequestMapping("/mind-mark")
 public class EmbeddingController {
 
     private EmbeddingService embeddingService;

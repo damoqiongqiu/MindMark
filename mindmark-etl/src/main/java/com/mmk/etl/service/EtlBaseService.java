@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class EtlService {
+public class EtlBaseService {
     @Autowired
     protected ChatModel chatModel;
 
@@ -71,8 +71,7 @@ public class EtlService {
         vectorStore.add(documents);
 
         //TODO: 强制 ElasticSearch 立即刷新索引
-        Thread.sleep(3000);
-
+        
         return documents;
     }
 }

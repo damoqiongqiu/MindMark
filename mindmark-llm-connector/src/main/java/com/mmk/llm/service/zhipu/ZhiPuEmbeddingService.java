@@ -10,6 +10,8 @@ import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author 大漠穷秋
@@ -19,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ZhiPuEmbeddingService implements EmbeddingService {
     private final ChatClient chatClient;
-    
+
     /**
      * TODO: 让用户上传文件，然后解析并写入向量数据库 。
      * TODO: 支持同时使用多种向量数据库。
@@ -37,18 +39,33 @@ public class ZhiPuEmbeddingService implements EmbeddingService {
 
         // 首先查询向量库
         List<Document> searchResults = vectorStore.similaritySearch(SearchRequest.query(msg).withTopK(5));
-        List<String> contentList = searchResults.stream().map(Document::getContent).toList();
-        String promptContent = String.join(" ", contentList);
-        log.debug(promptContent);
+        List<String> contentList = searchResults.stream()
+                .map(Document::getContent)
+                .filter(content -> content != null && !content.isBlank())
+                .collect(Collectors.toList());
 
-        // 调用大模型生成答案
-        String result=chatClient
-                .prompt(promptContent)   //把从向量数据库中查询到的内容作为 prompt 传递给模型
-                .user(msg)               //用户的消息
-                .call()
-                .content();
+        Optional<String> optionalPromptContent = contentList.isEmpty()
+                ? Optional.of("No relevant information found in the database.")
+                : Optional.of(String.join(" ", contentList));
 
-        return result;
+        return optionalPromptContent
+                .map(promptContent -> {
+                    log.debug("Prompt content: " + promptContent);
+
+                    return chatClient
+                            .prompt(promptContent)  // 把从向量数据库中查询到的内容作为 prompt 传递给模型
+                            .user(msg)              // 用户的消息
+                            .call()
+                            .content();
+                })
+                .orElseGet(() -> {
+                    log.warn("No relevant information found in the database.");
+                    return chatClient
+                            .prompt()
+                            .user(msg)
+                            .call()
+                            .content();
+                });
     }
 
 }

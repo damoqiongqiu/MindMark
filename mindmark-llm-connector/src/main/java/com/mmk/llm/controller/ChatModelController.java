@@ -17,7 +17,7 @@ import reactor.core.publisher.Flux;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("llm")
+@RequestMapping("/mind-mark")
 public class ChatModelController {
 
     private ChatModelService chatModelService;

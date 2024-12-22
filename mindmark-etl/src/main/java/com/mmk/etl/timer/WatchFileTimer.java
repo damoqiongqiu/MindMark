@@ -1,7 +1,10 @@
 package com.mmk.etl.timer;
 
 import com.mmk.etl.EtlConfig;
-import com.mmk.etl.service.FileService;
+import com.mmk.etl.jpa.entity.EmbeddingLogEntity;
+import com.mmk.etl.jpa.entity.FileUploadEntity;
+import com.mmk.etl.jpa.service.FileBzService;
+import com.mmk.etl.service.FileEtlService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
@@ -12,14 +15,17 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 定时任务，当检测到新的文件时，自动执行嵌入，并存储到向量数据库。
  * TODO: 数据脱敏，防止信息泄露
+ * TODO: 监控 file_upload 表，而不是监控目录
+ * TODO: 完成文件上传接口
  * @author 大漠穷秋
  */
 @Slf4j
@@ -27,75 +33,92 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @AllArgsConstructor
 public class WatchFileTimer {
 
-    private EtlConfig appConfig;
+    private EtlConfig etlConfig;
 
-    private FileService fileService;
+    private FileEtlService fileEtlService;
 
-    // 记录已处理文件名，避免重复处理
-    // TODO: 把已经处理过的文件记录到数据库
-    private final Set<String> processedFiles = ConcurrentHashMap.newKeySet();
+    private FileBzService fileBzService;
 
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
 
     /**
      * 定时任务：扫描目录并处理新文件
-     * TODO: 监控任意层级结构，包括子目录
      */
     @Scheduled(fixedRateString = "${application.watch-file.scan-interval}")
     public void watchAndProcessFiles() throws MalformedURLException, InterruptedException {
         if (!isRunning.compareAndSet(false, true)) {
+            log.debug("监控文件，上一个定时任务还没有结束，跳过本次调度...");
             return;
         }
 
-        log.debug("----------------------------------------------------------------------------------");
-        log.debug("Watching file: "+appConfig.getWatchFile().getFilePath());
-        log.debug("----------------------------------------------------------------------------------");
+        log.debug("开始读取文件上传记录表...");
+
+        Integer pageSize = etlConfig.getWatchMysql().getUserRowLimit();
+        Integer pageCount = fileBzService.getAllFilePageCount(pageSize);
 
         try {
-            File rootDir = new File(appConfig.getWatchFile().getFilePath());
-            if (!rootDir.exists() || !rootDir.isDirectory()) {
-                log.warn("监控目录不存在: {}", appConfig.getWatchFile().getFilePath());
-                return;
+            for (int currentPage = 0; currentPage < pageCount; currentPage++) {
+                log.debug("正在处理第 {} 页文件上传记录，共 {} 页...", currentPage + 1, pageCount);
+                getAllFilePageable(currentPage, pageSize);
             }
-            scanAndProcessFilesRecursively(rootDir);
         } finally {
             isRunning.set(false);
         }
     }
 
+    private void getAllFilePageable(Integer currentPage, Integer size) {
+        Optional.ofNullable(fileBzService.getAllFilePageable(currentPage, size))
+                .filter(files -> !files.isEmpty())
+                .ifPresentOrElse(
+                    files -> files.forEach(this::processFileEntity),
+                    () -> log.warn("分页查询结果为空，当前页: {}, 每页大小: {}", currentPage, size)
+                );
+    }
+
     /**
-     * 递归处理子目录
-     * @param dir
-     * @throws MalformedURLException
-     * @throws InterruptedException
+     * TODO: 测试，如果 PDF 文件体积非常大，例如 500M ，是否会出问题？
+     * TODO: 统一异常处理
+     * @param fileUploadEntity
      */
-    private void scanAndProcessFilesRecursively(File dir) throws MalformedURLException, InterruptedException {
-        File[] files = dir.listFiles();
-        if (files == null || files.length == 0) {
-            log.info("目录为空: {}", dir.getAbsolutePath());
+    private void processFileEntity(FileUploadEntity fileUploadEntity) {
+        Path filePath = Paths.get(fileUploadEntity.getPath());
+        File file = filePath.toFile();
+        if (!file.exists() || !file.isFile()) {
+            log.warn("文件不存在或不是有效文件: {}", fileUploadEntity.getPath());
             return;
         }
 
-        for (File file : files) {
-            if (file.isDirectory()) {
-                scanAndProcessFilesRecursively(file);
-            } else if (file.isFile() && !processedFiles.contains(file.getName())) {
-                log.debug("开始处理文件: " + file.getAbsolutePath());
+        Integer fileId = fileUploadEntity.getId();
+        EmbeddingLogEntity embeddingLogEntity = fileBzService.getFileEmbeddingLog(fileId);
+        if (embeddingLogEntity != null) {
+            log.debug("文件已经处理过，跳过: {}", file.getAbsolutePath());
+            return;
+        }
 
-                Resource resource = new UrlResource(file.toURI());
-                List<Document> documents = this.fileService.readFile(resource);
+        log.debug("开始处理文件: {}", file.getAbsolutePath());
 
-                // NOTE: 提取摘要和关键词的处理速度非常慢
-                documents = this.fileService.keywordDocuments(documents);
-                documents = this.fileService.summaryDocuments(documents);
-                documents = this.fileService.splitDocument(documents);
-                documents = this.fileService.saveDocument(documents);
+        try {
+            Resource resource = new UrlResource(file.toURI());
 
-                // 记录已经处理过的文件
-                // TODO: 对文件进行 Hash 然后记录
-                processedFiles.add(file.getName());
-            }
+            List<Document> documents = fileEtlService.readFile(resource);
+
+            log.debug("正在提取关键词...");
+            documents = fileEtlService.keywordDocuments(documents);
+
+            log.debug("正在生成摘要...");
+            documents = fileEtlService.summaryDocuments(documents);
+
+            log.debug("正在拆分文档...");
+            documents = fileEtlService.splitDocument(documents);
+
+            log.debug("正在保存文档...");
+            documents = fileEtlService.saveDocument(documents);
+
+            fileBzService.saveFileEmbeddingLog(fileId);
+
+            log.info("文件处理完成: {}", file.getAbsolutePath());
+        } catch (Exception e) {
+            log.error("处理文件时发生异常: {}", file.getAbsolutePath(), e);
         }
     }
-
 }

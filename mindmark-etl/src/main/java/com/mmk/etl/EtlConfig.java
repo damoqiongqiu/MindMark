@@ -22,14 +22,16 @@ public class EtlConfig {
     public static class WatchFileConfig {
         private boolean enabled;
         private String filePath;
-        private long scanInterval;
+        private Long scanInterval;
     }
 
     @Getter
     @Setter
     public static class WatchMysqlConfig {
         private boolean enabled;
-        private long scanInterval;
-        private String table;
+        private Long scanInterval;
+        private Integer dataRowLimit;
+        private Integer fileRowLimit;
+        private Integer userRowLimit;
     }
 }

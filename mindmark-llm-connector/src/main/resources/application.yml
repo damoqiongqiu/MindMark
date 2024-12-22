@@ -11,7 +11,9 @@ application:
     watch-mysql:
       enabled: true
       scan-interval: 60000
-      table: nicefish_cms_post
+      data-row-limit: 1000                  #数据分页参数，从数据库中获取数据时，每次读取多少行数据
+      file-row-limit: 1000                  #数据分页参数，解析文件时，每次获取多少行文件上传记录
+      user-row-limit: 1000                  #数据分页参数，每次获取多少行用户记录
 
 server:
   port: 9090
@@ -35,8 +37,8 @@ spring:
         enabled: true
     vectorstore:
       elasticsearch:
-        initialize-schema: true
-        index-name: mind-mark           #TODO: 实现多租户模式，为每一个用户建立独立的索引
+        initialize-schema: true         #请不要修改此配置
+        index-name: mind-mark           #这是 MindMark 默认的索引，请不要修改或删除
         dimensions: 2048                #不要修改这个配置，与具体大模型本身的维度参数有关系
         similarity: cosine
         batching-strategy: TOKEN_COUNT
