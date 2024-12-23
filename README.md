@@ -86,6 +86,10 @@ docker logs -f kibana
 
 检查一下初始数据，mind_mark_rbac_user 和 mind_mark_user_index 这两张表中应该分别有一行初始数据。
 
+PDM 模型如下：
+
+<img src="./docs/imgs/pdm.png"/>
+
 ## 3. 启动项目
 
 - 拉取本项目
@@ -132,6 +136,8 @@ MindMark 目前没有提供 UI 界面，我们用 Postman 来测试接口。
 ## 5.系统架构
 
 RAG
+
+<img src="./docs/imgs/rag.png"/>
 
 TODO:文档补充完整
 
