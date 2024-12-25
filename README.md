@@ -127,11 +127,17 @@ MindMark 能够监控两种类型的数据：
 
 ### 4.2 测试接口
 
-MindMark 目前没有提供 UI 界面，我们用 Postman 来测试接口。
+MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-react
+
+<img src="./docs/imgs/mind-mark-react.png"/>
+
+也可以使用 Postman 来测试接口。
 
 <img src="./docs/imgs/test-1.png"/>
 
 <img src="./docs/imgs/test-2.png"/>
+
+直接用 Chrome 浏览器也可以测试。
 
 ## 5.系统架构
 
