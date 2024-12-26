@@ -42,6 +42,10 @@ spring:
         dimensions: 2048                #不要修改这个配置，与具体大模型本身的维度参数有关系
         similarity: cosine
         batching-strategy: TOKEN_COUNT
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
 
 logging:
   level:
