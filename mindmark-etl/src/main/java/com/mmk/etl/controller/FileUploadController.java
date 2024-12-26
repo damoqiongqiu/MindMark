@@ -2,13 +2,13 @@ package com.mmk.etl.controller;
 
 import com.mmk.etl.jpa.entity.FileUploadEntity;
 import com.mmk.etl.jpa.service.FileBzService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
@@ -26,6 +26,25 @@ import java.util.Map;
 public class FileUploadController {
 
     private final FileBzService fileBzService;
+
+    @GetMapping("/list/{page}")
+    public Page<FileUploadEntity> getAllFilesPageable(@PathVariable Integer page) {
+        //TODO: pageSize 放到配置文件中
+        int pageSize=15;
+        return fileBzService.getAllFilePageable(page, pageSize);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteFileById(@PathVariable Integer id) {
+        try {
+            fileBzService.deleteFileById(id);
+            return ResponseEntity.ok("File deleted successfully.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File not found.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred.");
+        }
+    }
 
     /**
      * 文件上传

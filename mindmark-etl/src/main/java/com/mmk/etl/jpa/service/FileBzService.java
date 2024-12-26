@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -100,7 +101,7 @@ public class FileBzService {
      * @return
      */
     public Page<FileUploadEntity> getAllFilePageable(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "upTime"));
         return fileUploadRepository.findAll(pageable);
     }
 
@@ -126,5 +127,9 @@ public class FileBzService {
      */
     public EmbeddingLogEntity getFileEmbeddingLog(Integer fileId){
         return this.embeddingLogRepository.findByFileId(fileId);
+    }
+
+    public void deleteFileById(Integer id) {
+        this.fileUploadRepository.deleteById(id);
     }
 }

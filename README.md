@@ -127,8 +127,6 @@ MindMark 能够监控两种类型的数据：
 
 MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-react
 
-![MindMark React Interface](./docs/imgs/mmk-1.png)
-
 ![MindMark React Interface](./docs/imgs/mind-mark-react.png)
 
 也可以使用 Postman 来测试接口。
