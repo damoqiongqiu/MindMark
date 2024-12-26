@@ -2,8 +2,6 @@
 
 🚀🚀🚀MindMark（心印）是一款基于 SpringAI 和 AIGC 的问答系统， 采用 RAG 架构，可以和基于 Spring 体系的业务系统进行无缝集成。
 
-TODO:文档补充完整
-
 ## 0.注意
 
 SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请勿把本项目的代码用于实际业务系统。
@@ -30,7 +28,7 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 
 拉取 Docker 镜像：
 
-```
+```bash
 
 docker pull docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 
@@ -38,7 +36,7 @@ docker pull docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 
 启动容器：
 
-```
+```bash
   docker run -d --name elasticsearch \
   -e "discovery.type=single-node" \
   -e "xpack.security.enabled=false" \
@@ -54,7 +52,7 @@ docker pull docker.elastic.co/elasticsearch/elasticsearch:8.17.0
 
 观察启动日志
 
-```
+```bash
 docker logs -f elasticsearch
 ```
 
@@ -64,13 +62,13 @@ http://192.168.0.105:9200/
 
 安装 Kibana 图形界面并连接 ElasticSearch
 
-```
+```bash
 docker run -d --name kibana -p 5601:5601 --link elasticsearch:elasticsearch docker.elastic.co/kibana/kibana:8.17.0
 ```
 
 观察启动日志
 
-```
+```bash
 docker logs -f kibana
 ```
 
@@ -88,7 +86,7 @@ docker logs -f kibana
 
 PDM 模型如下：
 
-<img src="./docs/imgs/pdm.png"/>
+![PDM Model](./docs/imgs/pdm.png)
 
 ## 3. 启动项目
 
@@ -113,11 +111,11 @@ MindMark 能够监控两种类型的数据：
 
 以下是我的配置示例，指定 MindMark 监控本地 MySQL 中的 nicefish-spring-boot-test 这个 schema，同时指定了监控 nicefish_cms_post 这张表，并且告诉 MindMark 这张表有一个自增主键叫做 post_id ：
 
-<img src="./docs/imgs/db-1.png"/>
+![Database Monitoring Configuration](./docs/imgs/db-1.png)
 
-<img src="./docs/imgs/db-2.png"/>
+![Database Monitoring Configuration](./docs/imgs/db-2.png)
 
-<img src="./docs/imgs/db-3.png"/>
+![Database Monitoring Example](./docs/imgs/db-3.png)
 
 **注意：在 MindMark 当前的实现中，被监控的表必须带有自增主键，否则 MindMark 无法把表中的数据进行向量化，因为不能记录已经处理了哪些数据行，在后续的版本中再考虑改进。你需要按照自己的情况，指定 MindMark 去监控哪个库中的哪张表，如果不提供这些配置， MindMark 不会监控任何数据库。**
 
@@ -129,23 +127,21 @@ MindMark 能够监控两种类型的数据：
 
 MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-react
 
-<img src="./docs/imgs/mind-mark-react.png"/>
+![MindMark React Interface](./docs/imgs/mmk-1.png)
+
+![MindMark React Interface](./docs/imgs/mind-mark-react.png)
 
 也可以使用 Postman 来测试接口。
 
-<img src="./docs/imgs/test-1.png"/>
+![Test 1](./docs/imgs/test-1.png)
 
-<img src="./docs/imgs/test-2.png"/>
+![Test 2](./docs/imgs/test-2.png)
 
 直接用 Chrome 浏览器也可以测试。
 
 ## 5.系统架构
 
-RAG
-
-<img src="./docs/imgs/rag.png"/>
-
-TODO:文档补充完整
+![System Architecture](./docs/imgs/rag.png)
 
 ## 6.参考资源
 

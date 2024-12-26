@@ -102,6 +102,9 @@ public class WatchFileTimer {
 
             List<Document> documents = fileEtlService.readFile(resource);
 
+            log.debug("fileId 写入元数据...");
+            documents.forEach(doc -> doc.getMetadata().put("file_id", fileId));
+
             log.debug("正在提取关键词...");
             documents = fileEtlService.keywordDocuments(documents);
 

@@ -3,6 +3,7 @@ package com.mmk.llm.service;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author 大漠穷秋
@@ -14,6 +15,6 @@ public interface ChatClientService {
 
     Flux<String> chatStream(String msg);
 
-    String embed(String msg) throws IOException, InterruptedException;
+    String embed(String msg, Set<String> fileIds) throws IOException, InterruptedException;
 
 }

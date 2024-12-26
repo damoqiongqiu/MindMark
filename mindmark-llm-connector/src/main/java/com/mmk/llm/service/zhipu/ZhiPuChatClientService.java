@@ -8,9 +8,12 @@ import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Flux;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -49,15 +52,26 @@ public class ZhiPuChatClientService implements ChatClientService {
     }
 
     /**
-     * 根据嵌入的文本进行查询
+     * 根据用户消息和指定的文件ID进行查询
      * @param msg
+     * @param fileIds
      * @return
      */
-    public String embed(String msg) {
+    public String embed(String msg, Set<String> fileIds) {
         log.debug("embedding... {}", msg);
 
+        Set<String> finalFileIds = (fileIds == null) ? new HashSet<>() : fileIds;
+
         // 首先查询向量库
-        String promptContent = vectorStore.similaritySearch(SearchRequest.query(msg).withTopK(5)).stream()
+        String promptContent = vectorStore
+                .similaritySearch(SearchRequest.query(msg).withTopK(5))
+                .stream()
+                .filter(doc -> {
+                    if (CollectionUtils.isEmpty(finalFileIds)) return true;
+                    Object fileIdObject = doc.getMetadata().get("file_id");
+                    String docFileId = fileIdObject != null ? fileIdObject.toString() : null;
+                    return finalFileIds.contains(docFileId);
+                })
                 .map(Document::getContent)
                 .filter(StringUtils::hasText)
                 .collect(Collectors.joining(" "));

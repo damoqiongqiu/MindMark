@@ -2,15 +2,15 @@ package com.mmk.llm.controller;
 
 import com.mmk.llm.service.ChatClientService;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
+import java.util.Set;
 
 /**
  * @author 大漠穷秋
@@ -48,14 +48,26 @@ public class ChatClientController {
 
     /**
      * 根据嵌入的文本进行查询
-     * @param msg
+     * @param request
      * @return
+     * @throws IOException
+     * @throws InterruptedException
      */
-    @GetMapping("embedding")
-    public String embed(@RequestParam(value = "msg", defaultValue = "") String msg) throws IOException, InterruptedException {
+    @PostMapping("embedding")
+    public String embed(@RequestBody EmbedRequestParam request) throws IOException, InterruptedException {
+        String msg = request.getMsg();
         if (msg == null || msg.trim().isEmpty()) {
             return "对话消息不能为空。";
         }
-        return this.chatClientService.embed(msg);
+
+        Set<String> fileIds = request.getFileIds();
+        return this.chatClientService.embed(msg, fileIds);
+    }
+
+    @Getter
+    @Setter
+    public static class EmbedRequestParam {
+        private String msg;
+        private Set<String> fileIds;
     }
 }
