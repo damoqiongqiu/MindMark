@@ -20,7 +20,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 定时任务，把数据库中的数据进行向量化。
- * TODO: 避免重复扫描表
  * TODO: 允许指定到字段级别
  * TODO: 分页查询
  * TODO: 数据脱敏，防止信息泄露

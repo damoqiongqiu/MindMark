@@ -24,8 +24,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * 定时任务，当检测到新的文件时，自动执行嵌入，并存储到向量数据库。
  * TODO: 数据脱敏，防止信息泄露
- * TODO: 监控 file_upload 表，而不是监控目录
- * TODO: 完成文件上传接口
  * @author 大漠穷秋
  */
 @Slf4j

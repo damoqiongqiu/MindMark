@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -39,12 +41,26 @@ public class ChatClientController {
      * 文本流
      */
     @GetMapping(value = "chatStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<String> chatClientStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
+    public Flux<Map<String, Object>> chatClientStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
         if (msg == null || msg.trim().isEmpty()) {
-            return Flux.just("对话消息不能为空。");
+            return Flux.just(createResponse( "对话消息不能为空。"));
         }
-        return chatClientService.chatStream(msg);
+        return chatClientService
+                .chatStream(msg)
+                .map(data -> createResponse( data));
     }
+
+    /**
+     * 辅助方法用于构建 JSON 响应
+     * @param content
+     * @return
+     */
+    private Map<String, Object> createResponse(String content) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", content);
+        return response;
+    }
+
 
     /**
      * 根据嵌入的文本进行查询
