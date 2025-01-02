@@ -1,6 +1,8 @@
 package com.mmk.etl.jpa.repository;
 
 import com.mmk.etl.jpa.entity.SchemaEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +30,6 @@ public interface ISchemaRepository extends JpaRepository<SchemaEntity, Integer> 
      * @return Schema 配置
      */
     SchemaEntity findByDbIdAndSchemaName(Integer dbId, String schemaName);
+
+    Page<SchemaEntity> findByDbId(Integer dbId, Pageable pageable);
 }

@@ -4,6 +4,7 @@ application:
     copyright-year: 2024
     demo-enabled: true
     address-enabled: true
+    page-size: 15                           #每页显示的数据条数，所有的分页都会使用这个参数
     watch-file:
       enabled: true                         #是否开启文件监控功能，开启后会定时扫描目录中的数据，并进行嵌入操作
       file-path: C:/mindmark/upload         #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作

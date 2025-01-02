@@ -15,20 +15,15 @@ import java.util.List;
  * 对数据库中的数据进行嵌入操作相关的服务
  * @author 大漠穷秋
  */
-
 @Slf4j
 @Service
 @AllArgsConstructor
 public class DataBaseBzService {
 
     private IUserRepository userRepository;
-
     private IDbRepository dbRepository;
-
     private ISchemaRepository schemaRepository;
-
     private ITableRepository tableRepository;
-
     private IEmbeddingLogRepository embeddingLogRepository;
 
     /**
@@ -46,7 +41,6 @@ public class DataBaseBzService {
 
     /**
      * 分页查询所有用户
-     *
      * @param page 当前页码（从0开始）
      * @param size 每页记录数
      * @return 包含用户信息的分页对象
@@ -55,50 +49,50 @@ public class DataBaseBzService {
         Pageable pageable = PageRequest.of(page, size);
         return userRepository.findAll(pageable);
     }
-    
+
     /**
      * 获取给定用户配置的所有 dbEntity
-     * @param userId
-     * @return
+     * @param userId 用户 ID
+     * @return 数据库配置列表
      */
-    public List<DbEntity> getDbEntityListByUserId(Integer userId){
+    public List<DbEntity> getDbEntityListByUserId(Integer userId) {
         return this.dbRepository.findByUserId(userId);
     }
 
     /**
      * 获取指定 dbId 中的所有 schemaEntityList
-     * @param dbId
-     * @return
+     * @param dbId 数据库 ID
+     * @return schema 配置列表
      */
-    public List<SchemaEntity> getSchemaEntityListDbId(Integer dbId){
+    public List<SchemaEntity> getSchemaEntityListDbId(Integer dbId) {
         return this.schemaRepository.findByDbId(dbId);
     }
 
     /**
      * 获取指定 schemaId 中的所有 tableEntityList
-     * @param schemaId
-     * @return
+     * @param schemaId schema ID
+     * @return table 配置列表
      */
-    public List<TableEntity> getTableEntityListDbId(Integer schemaId){
+    public List<TableEntity> getTableEntityListDbId(Integer schemaId) {
         return this.tableRepository.findBySchemaId(schemaId);
     }
 
     /**
      * 获取数据库向量化处理记录
-     * @param dbId
-     * @param tableId
-     * @return
+     * @param dbId 数据库 ID
+     * @param tableId 表 ID
+     * @return 向量化处理记录
      */
-    public EmbeddingLogEntity getDbEmbeddingLog(Integer dbId, Integer tableId){
+    public EmbeddingLogEntity getDbEmbeddingLog(Integer dbId, Integer tableId) {
         return this.embeddingLogRepository.findByDbIdAndTableId(dbId, tableId);
     }
 
     /**
      * 保存数据库向量化操作的记录
-     * @param dbId
-     * @param tableId
-     * @param startId
-     * @return
+     * @param dbId 数据库 ID
+     * @param tableId 表 ID
+     * @param startId 起始 ID
+     * @return 向量化处理记录
      */
     public EmbeddingLogEntity saveDbEmbeddingLog(Integer dbId, Integer tableId, Integer startId) {
         EmbeddingLogEntity embeddingLogEntity = this.embeddingLogRepository.findByDbIdAndTableId(dbId, tableId);
@@ -110,5 +104,58 @@ public class DataBaseBzService {
         embeddingLogEntity.setTableId(tableId);
         embeddingLogEntity.setStartId(startId);
         return this.embeddingLogRepository.save(embeddingLogEntity);
+    }
+
+    /**
+     * 分页查询指定 dbId 中的 schema 配置
+     * @param dbId 数据库 ID
+     * @param page 当前页码
+     * @param size 每页记录数
+     * @return 包含 schema 配置的分页对象
+     */
+    public Page<SchemaEntity> getSchemaEntityListDbIdPageable(Integer dbId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return schemaRepository.findByDbId(dbId, pageable);
+    }
+
+    /**
+     * 分页查询指定 schemaId 中的 table 配置
+     * @param schemaId schema ID
+     * @param page 当前页码
+     * @param size 每页记录数
+     * @return 包含 table 配置的分页对象
+     */
+    public Page<TableEntity> getTableEntityListSchemaIdPageable(Integer schemaId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return tableRepository.findBySchemaId(schemaId, pageable);
+    }
+
+    /**
+     * 分页查询给定用户配置的所有 dbEntity
+     * @param userId 用户 ID
+     * @param page 当前页码
+     * @param size 每页记录数
+     * @return 包含数据库配置的分页对象
+     */
+    public Page<DbEntity> getDbEntityListByUserIdPageable(Integer userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return dbRepository.findByUserId(userId, pageable);
+    }
+
+    /**
+     * 创建新的数据库配置
+     * @param dbEntity 数据库配置对象
+     * @return 创建的数据库配置对象
+     */
+    public DbEntity createDatabase(DbEntity dbEntity) {
+        return dbRepository.save(dbEntity);
+    }
+
+    /**
+     * 根据 ID 删除数据库配置
+     * @param id 数据库配置 ID
+     */
+    public void deleteDatabase(Integer id) {
+        dbRepository.deleteById(id);
     }
 }

@@ -3,8 +3,8 @@ package com.mmk.etl.controller;
 import com.mmk.etl.jpa.entity.FileUploadEntity;
 import com.mmk.etl.jpa.service.FileBzService;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,42 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * TODO: 加权限控制，未登录用户禁止调用此上传接口
- * @author  大漠穷秋
+ * 文件上传相关操作的控制器
+ * 
+ * @author 大漠穷秋
  */
 @RestController
-@AllArgsConstructor
 @Slf4j
 @RequestMapping("/mind-mark/file")
 public class FileUploadController {
 
     private final FileBzService fileBzService;
 
+    @Value("${application.page-size}")
+    private Integer pageSize;
+
+    // 添加显式构造函数
+    public FileUploadController(FileBzService fileBzService) {
+        this.fileBzService = fileBzService;
+    }
+
+    /**
+     * 分页查询所有文件上传记录
+     * 
+     * @param page 当前页码
+     * @return 包含文件上传记录的分页对象
+     */
     @GetMapping("/list/{page}")
     public Page<FileUploadEntity> getAllFilesPageable(@PathVariable Integer page) {
-        //TODO: pageSize 放到配置文件中
-        int pageSize=15;
         return fileBzService.getAllFilePageable(page, pageSize);
     }
 
+    /**
+     * 根据文件 ID 删除文件
+     * 
+     * @param id 文件 ID
+     * @return 删除结果
+     */
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteFileById(@PathVariable Integer id) {
         try {
@@ -48,7 +66,7 @@ public class FileUploadController {
 
     /**
      * 文件上传
-     *
+     * 
      * @param files 上传的文件数组
      * @return 上传结果详情
      */
@@ -81,6 +99,7 @@ public class FileUploadController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            log.error("文件上传过程中出现异常", e);
             log.error("文件上传过程中出现异常", e);
             response.put("status", "failure");
             response.put("message", "文件上传失败，请联系管理员");
