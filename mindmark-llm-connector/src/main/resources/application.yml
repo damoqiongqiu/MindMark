@@ -10,7 +10,7 @@ application:
       scan-interval: 30000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
     watch-mysql:
       enabled: true
-      scan-interval: 60000
+      scan-interval: 300000                 #ms, 定时器访问数据库的间隔，此参数最好配置1分钟以上
       data-row-limit: 1000                  #数据分页参数，从数据库中获取数据时，每次读取多少行数据
       file-row-limit: 1000                  #数据分页参数，解析文件时，每次获取多少行文件上传记录
       user-row-limit: 1000                  #数据分页参数，每次获取多少行用户记录
@@ -25,7 +25,7 @@ spring:
     uris: http://192.168.0.105:9200/      #请改成你自己的路径
   ai:
     zhipuai:    #智谱大模型
-      api-key:    #请改成你自己的 key
+      api-key:  #请改成你自己的 key
       chat:
         options:
           temperature: 0.7
