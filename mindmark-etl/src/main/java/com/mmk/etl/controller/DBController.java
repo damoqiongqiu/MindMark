@@ -4,13 +4,13 @@ import com.mmk.etl.jpa.entity.DbEntity;
 import com.mmk.etl.jpa.entity.SchemaEntity;
 import com.mmk.etl.jpa.entity.TableEntity;
 import com.mmk.etl.jpa.service.DataBaseBzService;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 数据库相关操作的控制器
@@ -33,13 +33,12 @@ public class DBController {
 
     /**
      * 分页查询所有数据库配置
-     * 
-     * @param page 当前页码
-     * @return 包含数据库配置的分页对象
+     *
+     * @param userId 用户ID
      */
-    @GetMapping("/list/{page}")
-    public Page<DbEntity> getAllDatabasesPageable(@PathVariable Integer page) {
-        return dataBaseBzService.getDbEntityListByUserIdPageable(1, page, pageSize);
+    @GetMapping("/list/{userId}")
+    public List<DbEntity> getAllDatabasesPageable(@PathVariable Integer userId) {
+        return dataBaseBzService.getDbEntityListByUserId(userId);
     }
 
     /**
@@ -50,15 +49,8 @@ public class DBController {
      * @return 包含数据库配置的分页对象
      */
     @GetMapping("/user/{userId}/{page}")
-    public ResponseEntity<Page<DbEntity>> getDatabasesByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
-        try {
-            Page<DbEntity> dbEntities = dataBaseBzService.getDbEntityListByUserIdPageable(userId, page, pageSize);
-            return ResponseEntity.ok(dbEntities);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public Page<DbEntity> getDatabasesByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
+        return dataBaseBzService.getDbEntityListByUserIdPageable(userId, page, pageSize);
     }
 
     /**
@@ -69,15 +61,19 @@ public class DBController {
      * @return 包含 schema 配置的分页对象
      */
     @GetMapping("/schemas/{dbId}/{page}")
-    public ResponseEntity<Page<SchemaEntity>> getSchemasByDbId(@PathVariable Integer dbId, @PathVariable Integer page) {
-        try {
-            Page<SchemaEntity> schemaEntities = dataBaseBzService.getSchemaEntityListDbIdPageable(dbId, page, pageSize);
-            return ResponseEntity.ok(schemaEntities);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public Page<SchemaEntity> getSchemasByDbId(@PathVariable Integer dbId, @PathVariable Integer page) {
+        return dataBaseBzService.getSchemaEntityListByDbIdPageable(dbId, page, pageSize);
+    }
+
+    /**
+     * 查询指定数据库下的所有 schema 配置（不分页）
+     * 
+     * @param dbId 数据库 ID
+     * @return schema 配置列表
+     */
+    @GetMapping("/schemas/all/{dbId}")
+    public List<SchemaEntity> getAllSchemasByDbId(@PathVariable Integer dbId) {
+        return dataBaseBzService.getSchemaEntityListByDbId(dbId);
     }
 
     /**
@@ -88,15 +84,19 @@ public class DBController {
      * @return 包含 table 配置的分页对象
      */
     @GetMapping("/tables/{schemaId}/{page}")
-    public ResponseEntity<Page<TableEntity>> getTablesBySchemaId(@PathVariable Integer schemaId, @PathVariable Integer page) {
-        try {
-            Page<TableEntity> tableEntities = dataBaseBzService.getTableEntityListSchemaIdPageable(schemaId, page, pageSize);
-            return ResponseEntity.ok(tableEntities);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    public Page<TableEntity> getTablesBySchemaId(@PathVariable Integer schemaId, @PathVariable Integer page) {
+        return dataBaseBzService.getTableEntityListBySchemaIdPageable(schemaId, page, pageSize);
+    }
+
+    /**
+     * 查询指定 schema 下的所有表配置（不分页）
+     * 
+     * @param schemaId schema ID
+     * @return 表配置列表
+     */
+    @GetMapping("/tables/all/{schemaId}")
+    public List<TableEntity> getAllTablesBySchemaId(@PathVariable Integer schemaId) {
+        return dataBaseBzService.getTableEntityListBySchemaId(schemaId);
     }
 
     /**
@@ -106,13 +106,9 @@ public class DBController {
      * @return 创建的数据库配置对象
      */
     @PostMapping("/create")
-    public ResponseEntity<DbEntity> createDatabase(@RequestBody DbEntity dbEntity) {
-        try {
-            DbEntity createdDbEntity = dataBaseBzService.createDatabase(dbEntity);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdDbEntity);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
+    @ResponseStatus(HttpStatus.CREATED)
+    public DbEntity createDatabase(@RequestBody DbEntity dbEntity) {
+        return dataBaseBzService.createDatabase(dbEntity);
     }
 
     /**
@@ -122,14 +118,8 @@ public class DBController {
      * @return 删除结果
      */
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteDatabase(@PathVariable Integer id) {
-        try {
-            dataBaseBzService.deleteDatabase(id);
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteDatabase(@PathVariable Integer id) {
+        dataBaseBzService.deleteDatabase(id);
     }
 }

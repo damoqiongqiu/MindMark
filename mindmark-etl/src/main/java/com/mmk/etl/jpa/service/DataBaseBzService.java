@@ -51,7 +51,7 @@ public class DataBaseBzService {
     }
 
     /**
-     * 获取给定用户配置的所有 dbEntity
+     * 获取给定用户配置的所有 dbEntity ，不分页
      * @param userId 用户 ID
      * @return 数据库配置列表
      */
@@ -60,20 +60,20 @@ public class DataBaseBzService {
     }
 
     /**
-     * 获取指定 dbId 中的所有 schemaEntityList
+     * 获取指定 dbId 中的所有 schemaEntityList ，不分页
      * @param dbId 数据库 ID
      * @return schema 配置列表
      */
-    public List<SchemaEntity> getSchemaEntityListDbId(Integer dbId) {
+    public List<SchemaEntity> getSchemaEntityListByDbId(Integer dbId) {
         return this.schemaRepository.findByDbId(dbId);
     }
 
     /**
-     * 获取指定 schemaId 中的所有 tableEntityList
+     * 获取指定 schemaId 中的所有 tableEntityList ，不分页
      * @param schemaId schema ID
      * @return table 配置列表
      */
-    public List<TableEntity> getTableEntityListDbId(Integer schemaId) {
+    public List<TableEntity> getTableEntityListBySchemaId(Integer schemaId) {
         return this.tableRepository.findBySchemaId(schemaId);
     }
 
@@ -107,31 +107,31 @@ public class DataBaseBzService {
     }
 
     /**
-     * 分页查询指定 dbId 中的 schema 配置
+     * 分页查询指定 dbId 中的 schema 配置，带分页
      * @param dbId 数据库 ID
      * @param page 当前页码
      * @param size 每页记录数
      * @return 包含 schema 配置的分页对象
      */
-    public Page<SchemaEntity> getSchemaEntityListDbIdPageable(Integer dbId, int page, int size) {
+    public Page<SchemaEntity> getSchemaEntityListByDbIdPageable(Integer dbId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return schemaRepository.findByDbId(dbId, pageable);
     }
 
     /**
-     * 分页查询指定 schemaId 中的 table 配置
+     * 分页查询指定 schemaId 中的 table 配置，带分页
      * @param schemaId schema ID
      * @param page 当前页码
      * @param size 每页记录数
      * @return 包含 table 配置的分页对象
      */
-    public Page<TableEntity> getTableEntityListSchemaIdPageable(Integer schemaId, int page, int size) {
+    public Page<TableEntity> getTableEntityListBySchemaIdPageable(Integer schemaId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return tableRepository.findBySchemaId(schemaId, pageable);
     }
 
     /**
-     * 分页查询给定用户配置的所有 dbEntity
+     * 分页查询给定用户配置的所有 dbEntity ，带分页
      * @param userId 用户 ID
      * @param page 当前页码
      * @param size 每页记录数

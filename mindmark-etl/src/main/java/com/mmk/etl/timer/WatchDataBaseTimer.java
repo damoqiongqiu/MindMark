@@ -72,13 +72,13 @@ public class WatchDataBaseTimer {
 
     private void processDbEntity(DbEntity dbEntity) {
         Integer dbId = dbEntity.getId();
-        List<SchemaEntity> schemaEntityList = dataBaseBzService.getSchemaEntityListDbId(dbId);
+        List<SchemaEntity> schemaEntityList = dataBaseBzService.getSchemaEntityListByDbId(dbId);
         schemaEntityList.forEach(schemaEntity -> processSchemaEntity(schemaEntity, dbEntity));
     }
 
     private void processSchemaEntity(SchemaEntity schemaEntity, DbEntity dbEntity) {
         Integer schemaId = schemaEntity.getId();
-        List<TableEntity> tableEntityList = dataBaseBzService.getTableEntityListDbId(schemaId);
+        List<TableEntity> tableEntityList = dataBaseBzService.getTableEntityListBySchemaId(schemaId);
         tableEntityList.forEach(tableEntity -> processTableEntity(tableEntity, dbEntity, schemaEntity));
     }
 
