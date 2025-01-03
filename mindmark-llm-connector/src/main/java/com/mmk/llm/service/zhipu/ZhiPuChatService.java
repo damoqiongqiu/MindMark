@@ -1,6 +1,6 @@
 package com.mmk.llm.service.zhipu;
 
-import com.mmk.llm.service.ChatClientService;
+import com.mmk.llm.service.ChatService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class ZhiPuChatClientService implements ChatClientService {
+public class ZhiPuChatService implements ChatService {
 
     private final ChatClient chatClient;
 

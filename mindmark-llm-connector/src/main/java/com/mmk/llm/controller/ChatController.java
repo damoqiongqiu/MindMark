@@ -1,6 +1,6 @@
 package com.mmk.llm.controller;
 
-import com.mmk.llm.service.ChatClientService;
+import com.mmk.llm.service.ChatService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,30 +22,30 @@ import java.util.Set;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mind-mark")
-public class ChatClientController {
+public class ChatController {
 
-    private ChatClientService chatClientService;
+    private ChatService chatService;
 
     /**
      * 文本
      */
     @GetMapping("chat")
-    public String chatClient(@RequestParam(value = "msg", defaultValue = "") String msg) {
+    public String chat(@RequestParam(value = "msg", defaultValue = "") String msg) {
         if (msg == null || msg.trim().isEmpty()) {
             return "对话消息不能为空。";
         }
-        return chatClientService.chat(msg);
+        return chatService.chat(msg);
     }
 
     /**
      * 文本流
      */
     @GetMapping(value = "chatStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Map<String, Object>> chatClientStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
+    public Flux<Map<String, Object>> chatStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
         if (msg == null || msg.trim().isEmpty()) {
             return Flux.just(createResponse( "对话消息不能为空。"));
         }
-        return chatClientService
+        return chatService
                 .chatStream(msg)
                 .map(data -> createResponse( data));
     }
@@ -77,7 +77,7 @@ public class ChatClientController {
         }
 
         Set<String> fileIds = request.getFileIds();
-        return this.chatClientService.embed(msg, fileIds);
+        return this.chatService.embed(msg, fileIds);
     }
 
     @Getter
