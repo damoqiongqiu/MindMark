@@ -109,14 +109,6 @@ MindMark 能够监控两种类型的数据：
 
 你可以指定 MindMark 监控其它数据库中的表， MindMark 会把你指定的表中的所有数据全部向量化，并存储到 ElasticSearch 中，处理过程会分页处理。
 
-以下是我的配置示例，指定 MindMark 监控本地 MySQL 中的 nicefish-spring-boot-test 这个 schema，同时指定了监控 nicefish_cms_post 这张表，并且告诉 MindMark 这张表有一个自增主键叫做 post_id ：
-
-![Database Monitoring Configuration](./docs/imgs/db-1.png)
-
-![Database Monitoring Configuration](./docs/imgs/db-2.png)
-
-![Database Monitoring Example](./docs/imgs/db-3.png)
-
 **注意：在 MindMark 当前的实现中，被监控的表必须带有自增主键，否则 MindMark 无法把表中的数据进行向量化，因为不能记录已经处理了哪些数据行，在后续的版本中再考虑改进。你需要按照自己的情况，指定 MindMark 去监控哪个库中的哪张表，如果不提供这些配置， MindMark 不会监控任何数据库。**
 
 #### 4.1.2 让 MindMark 监控文件
