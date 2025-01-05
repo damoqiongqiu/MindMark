@@ -16,20 +16,8 @@ import java.util.List;
 
 @Repository
 public interface ITableRepository extends JpaRepository<TableEntity, Integer> {
-    /**
-     * 根据 Schema ID 查找所有需要处理的表。
-     * @param schemaId Schema ID
-     * @return 表配置列表
-     */
-    List<TableEntity> findBySchemaId(Integer schemaId);
 
-    /**
-     * 根据 Schema ID 和表名称查找特定的表配置。
-     * @param schemaId Schema ID
-     * @param tableName 表名称
-     * @return 表配置
-     */
-    TableEntity findBySchemaIdAndTableName(Integer schemaId, String tableName);
+    List<TableEntity> findByDbId(Integer dbId);
 
-    Page<TableEntity> findBySchemaId(Integer schemaId, Pageable pageable);
+    Page<TableEntity> findByDbId(Integer dbId, Pageable pageable);
 }

@@ -1,7 +1,7 @@
 package com.mmk.etl.util;
 
 import com.mmk.etl.jpa.entity.DbEntity;
-import com.mmk.etl.jpa.entity.SchemaEntity;
+import com.mmk.etl.jpa.entity.TableEntity;
 
 /**
  * 拼接数据库连接 URL
@@ -10,8 +10,8 @@ import com.mmk.etl.jpa.entity.SchemaEntity;
 
 public class JdbcUrlBuilder {
 
-    public static String buildJdbcUrl(DbEntity dbEntity, SchemaEntity schemaEntity) {
-        if (dbEntity == null || schemaEntity == null) {
+    public static String buildJdbcUrl(DbEntity dbEntity, TableEntity tableEntity) {
+        if (dbEntity == null || tableEntity == null) {
             throw new IllegalArgumentException("DbEntity or SchemaEntity is null");
         }
 
@@ -21,7 +21,7 @@ public class JdbcUrlBuilder {
         String charset = dbEntity.getCharset();
         String userName = dbEntity.getUserName();
         String password = dbEntity.getPassword();
-        String schemaName = schemaEntity.getSchemaName();
+        String schemaName = tableEntity.getSchemaName();
 
         switch (dbType.toLowerCase()) {
             case "mysql":

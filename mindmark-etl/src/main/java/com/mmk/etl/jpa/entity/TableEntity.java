@@ -25,8 +25,11 @@ public class TableEntity implements Serializable {
     @Column(name = "id", nullable = false, updatable = false)
     private Integer id;
 
-    @Column(name = "schema_id")
-    private Integer schemaId;
+    @Column(name = "db_id")
+    private Integer dbId;
+
+    @Column(name = "schema_name", length = 128)
+    private String schemaName;
 
     @Column(name = "table_name", length = 128)
     private String tableName;

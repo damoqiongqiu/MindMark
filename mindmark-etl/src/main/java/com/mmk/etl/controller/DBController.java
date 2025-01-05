@@ -1,13 +1,10 @@
 package com.mmk.etl.controller;
 
 import com.mmk.etl.jpa.entity.DbEntity;
-import com.mmk.etl.jpa.entity.SchemaEntity;
-import com.mmk.etl.jpa.entity.TableEntity;
 import com.mmk.etl.jpa.service.DataBaseBzService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,12 +29,12 @@ public class DBController {
     }
 
     /**
-     * 分页查询所有数据库配置
+     * 查询所有数据库配置（不分页）
      *
      * @param userId 用户ID
      */
-    @GetMapping("/list/{userId}")
-    public List<DbEntity> getAllDatabasesPageable(@PathVariable Integer userId) {
+    @GetMapping("/list/all/{userId}")
+    public List<DbEntity> getAllDatabases(@PathVariable Integer userId) {
         return dataBaseBzService.getDbEntityListByUserId(userId);
     }
 
@@ -48,67 +45,9 @@ public class DBController {
      * @param page   当前页码
      * @return 包含数据库配置的分页对象
      */
-    @GetMapping("/user/{userId}/{page}")
-    public Page<DbEntity> getDatabasesByUserId(@PathVariable Integer userId, @PathVariable Integer page) {
+    @GetMapping("/list/{userId}/{page}")
+    public Page<DbEntity> getDatabasesByUserIdPageable(@PathVariable Integer userId, @PathVariable Integer page) {
         return dataBaseBzService.getDbEntityListByUserIdPageable(userId, page, pageSize);
-    }
-
-    /**
-     * 根据数据库 ID 分页查询 schema 配置
-     * 
-     * @param dbId 数据库 ID
-     * @param page 当前页码
-     * @return 包含 schema 配置的分页对象
-     */
-    @GetMapping("/schemas/{dbId}/{page}")
-    public Page<SchemaEntity> getSchemasByDbId(@PathVariable Integer dbId, @PathVariable Integer page) {
-        return dataBaseBzService.getSchemaEntityListByDbIdPageable(dbId, page, pageSize);
-    }
-
-    /**
-     * 查询指定数据库下的所有 schema 配置（不分页）
-     * 
-     * @param dbId 数据库 ID
-     * @return schema 配置列表
-     */
-    @GetMapping("/schemas/all/{dbId}")
-    public List<SchemaEntity> getAllSchemasByDbId(@PathVariable Integer dbId) {
-        return dataBaseBzService.getSchemaEntityListByDbId(dbId);
-    }
-
-    /**
-     * 根据 schema ID 分页查询 table 配置
-     * 
-     * @param schemaId schema ID
-     * @param page     当前页码
-     * @return 包含 table 配置的分页对象
-     */
-    @GetMapping("/tables/{schemaId}/{page}")
-    public Page<TableEntity> getTablesBySchemaId(@PathVariable Integer schemaId, @PathVariable Integer page) {
-        return dataBaseBzService.getTableEntityListBySchemaIdPageable(schemaId, page, pageSize);
-    }
-
-    /**
-     * 查询指定 schema 下的所有表配置（不分页）
-     * 
-     * @param schemaId schema ID
-     * @return 表配置列表
-     */
-    @GetMapping("/tables/all/{schemaId}")
-    public List<TableEntity> getAllTablesBySchemaId(@PathVariable Integer schemaId) {
-        return dataBaseBzService.getTableEntityListBySchemaId(schemaId);
-    }
-
-    /**
-     * 创建新的数据库配置
-     * 
-     * @param dbEntity 数据库配置对象
-     * @return 创建的数据库配置对象
-     */
-    @PostMapping("/create")
-    @ResponseStatus(HttpStatus.CREATED)
-    public DbEntity createDatabase(@RequestBody DbEntity dbEntity) {
-        return dataBaseBzService.createDatabase(dbEntity);
     }
 
     /**
@@ -118,8 +57,29 @@ public class DBController {
      * @return 删除结果
      */
     @DeleteMapping("/delete/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDatabase(@PathVariable Integer id) {
         dataBaseBzService.deleteDatabase(id);
+    }
+
+    /**
+     * 更新数据库配置
+     * 
+     * @param dbEntity 数据库配置对象
+     * @return 更新后的数据库配置对象
+     */
+    @PutMapping("/save")
+    public DbEntity saveDatabase(@RequestBody DbEntity dbEntity) {
+        return dataBaseBzService.saveDatabase(dbEntity);
+    }
+
+    /**
+     * 根据ID获取数据库配置详情
+     * 
+     * @param id 数据库配置ID
+     * @return 数据库配置详情
+     */
+    @GetMapping("/{id}")
+    public DbEntity getDatabaseById(@PathVariable Integer id) {
+        return dataBaseBzService.getDatabaseById(id);
     }
 }

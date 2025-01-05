@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2024/12/22 19:45:45                          */
+/* Created on:     2025/1/4 16:31:02                            */
 /*==============================================================*/
 
 
@@ -11,8 +11,6 @@ drop table if exists mind_mark_embedding_log;
 drop table if exists mind_mark_file_upload;
 
 drop table if exists mind_mark_rbac_user;
-
-drop table if exists mind_mark_schema_for_process;
 
 drop table if exists mind_mark_table_for_process;
 
@@ -134,25 +132,13 @@ values
 );
 
 /*==============================================================*/
-/* Table: mind_mark_schema_for_process                          */
-/*==============================================================*/
-create table mind_mark_schema_for_process
-(
-   id                   int(11) not null auto_increment,
-   db_id                int(11) not null,
-   schema_name          varchar(128) not null,
-   primary key (id)
-);
-
-alter table mind_mark_schema_for_process comment '维护进行处理的库名称，用户可以在 UI 界面上进行配置。';
-
-/*==============================================================*/
 /* Table: mind_mark_table_for_process                           */
 /*==============================================================*/
 create table mind_mark_table_for_process
 (
    id                   int(11) not null auto_increment,
-   schema_id            int(11) not null,
+   db_id                int(11) not null,
+   schema_name          varchar(128) not null comment '需要被处理的数据库名称',
    table_name           varchar(128) not null comment '需要被处理的表名称',
    id_column            varchar(128) not null comment '主键字段的名称，假设需要被处理的表带有整数自增型的 id',
    primary key (id)

@@ -50,12 +50,12 @@ spring:
 
 logging:
   level:
-    root: TRACE
-    com.mindmark: TRACE
-    org.springframework: TRACE
-    org.hibernate: TRACE
-    org.hibernate.SQL: TRACE
-    org.hibernate.type.descriptor.sql: TRACE
-    org.hibernate.engine.QueryParameters: TRACE
-    org.hibernate.engine.query.HQLQueryPlan: TRACE
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    root: DEBUG
+    com.mindmark: DEBUG
+    org.springframework: DEBUG
+    org.hibernate: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: DEBUG
+    org.hibernate.engine.QueryParameters: DEBUG
+    org.hibernate.engine.query.HQLQueryPlan: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: DEBUG

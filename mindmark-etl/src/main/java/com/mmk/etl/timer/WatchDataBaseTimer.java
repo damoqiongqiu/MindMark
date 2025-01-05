@@ -72,17 +72,11 @@ public class WatchDataBaseTimer {
 
     private void processDbEntity(DbEntity dbEntity) {
         Integer dbId = dbEntity.getId();
-        List<SchemaEntity> schemaEntityList = dataBaseBzService.getSchemaEntityListByDbId(dbId);
-        schemaEntityList.forEach(schemaEntity -> processSchemaEntity(schemaEntity, dbEntity));
+        List<TableEntity> schemaEntityList = dataBaseBzService.getTableEntityListByDbId(dbId);
+        schemaEntityList.forEach(tableEntity -> processTableEntity(tableEntity, dbEntity));
     }
 
-    private void processSchemaEntity(SchemaEntity schemaEntity, DbEntity dbEntity) {
-        Integer schemaId = schemaEntity.getId();
-        List<TableEntity> tableEntityList = dataBaseBzService.getTableEntityListBySchemaId(schemaId);
-        tableEntityList.forEach(tableEntity -> processTableEntity(tableEntity, dbEntity, schemaEntity));
-    }
-
-    private void processTableEntity(TableEntity tableEntity, DbEntity dbEntity, SchemaEntity schemaEntity) {
+    private void processTableEntity(TableEntity tableEntity, DbEntity dbEntity) {
         Integer dbId = dbEntity.getId();
         Integer tableId = tableEntity.getId();
         String tableName = tableEntity.getTableName();
@@ -97,7 +91,7 @@ public class WatchDataBaseTimer {
 
         try {
             while (true) {
-                List<Map<String, Object>> dataList = mySQLEtlService.executeQueryWithPagination(dbEntity, schemaEntity, tableName, idColumn, startId, dataRowLimit);
+                List<Map<String, Object>> dataList = mySQLEtlService.executeQueryWithPagination(dbEntity, tableEntity, startId, dataRowLimit);
                 if (CollectionUtils.isEmpty(dataList)) {
                     log.debug("表 {} 中没有更多记录要处理，结束查询。", tableName);
                     break;

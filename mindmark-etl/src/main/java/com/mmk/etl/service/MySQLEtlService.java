@@ -1,7 +1,7 @@
 package com.mmk.etl.service;
 
 import com.mmk.etl.jpa.entity.DbEntity;
-import com.mmk.etl.jpa.entity.SchemaEntity;
+import com.mmk.etl.jpa.entity.TableEntity;
 import com.mmk.etl.util.JdbcUrlBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -25,8 +25,8 @@ public class MySQLEtlService extends EtlBaseService {
     /**
      * 创建数据源，根据用户配置动态连接不同的数据库。
      */
-    public static DataSource createDataSource(DbEntity dbEntity, SchemaEntity schemaEntity) {
-        String jdbcUrl = JdbcUrlBuilder.buildJdbcUrl(dbEntity, schemaEntity);
+    public static DataSource createDataSource(DbEntity dbEntity, TableEntity tableEntity) {
+        String jdbcUrl = JdbcUrlBuilder.buildJdbcUrl(dbEntity, tableEntity);
         String username = dbEntity.getUserName();
         String password = dbEntity.getPassword();
 
@@ -59,19 +59,16 @@ public class MySQLEtlService extends EtlBaseService {
 
     /**
      * 执行带分页的查询，根据用户配置连接不同的数据库。
-     * @param tableName 表名
-     * @param startId 起始ID
-     * @param rowLimit 行数限制
      * @return 查询结果
      */
-    public List<Map<String, Object>> executeQueryWithPagination(DbEntity dbEntity, SchemaEntity schemaEntity, String tableName, String idColumn, Integer startId, Integer rowLimit) {
-        validateName(tableName, "table name");
-        validateName(idColumn, "column name");
+    public List<Map<String, Object>> executeQueryWithPagination(DbEntity dbEntity, TableEntity tableEntity, Integer startId, Integer rowLimit) {
+        validateName(tableEntity.getTableName(), "table name");
+        validateName(tableEntity.getIdColumn(), "column name");
 
         try {
-            JdbcTemplate jdbcTemplate = new JdbcTemplate(createDataSource(dbEntity, schemaEntity));
+            JdbcTemplate jdbcTemplate = new JdbcTemplate(createDataSource(dbEntity, tableEntity));
             // 执行查询，按ID列排序并限制返回行数
-            String sql = String.format("SELECT * FROM %s WHERE %s >= ? ORDER BY %s ASC LIMIT ?", tableName, idColumn, idColumn);
+            String sql = String.format("SELECT * FROM %s WHERE %s >= ? ORDER BY %s ASC LIMIT ?", tableEntity.getTableName(), tableEntity.getIdColumn(), tableEntity.getIdColumn());
             log.debug(sql);
             return jdbcTemplate.queryForList(sql, startId, rowLimit);
         } catch (Exception e) {
