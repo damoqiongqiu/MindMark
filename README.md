@@ -20,7 +20,7 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 
 ### 2.1 选择一个大模型
 
-MindMark 已经测试了 Gitee 和 Zhipu 的大模型，你可以选择其中一个。
+MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 
 | 模型 | 说明 |
 | --- | --- |
