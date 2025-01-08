@@ -1,6 +1,5 @@
 package com.mmk.llm.service.zhipu;
 
-import com.mmk.llm.service.ChatModelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
@@ -15,13 +14,9 @@ import reactor.core.publisher.Flux;
  */
 @Slf4j
 @Service
-public class ZhiPuChatModelService implements ChatModelService {
-    /**
-     * 智谱提供的文本嵌入模型
-     * 输入和输出长度都有长度限制，参考官方文档：https://bigmodel.cn/dev/api/vector/embedding
-     */
+public class ZhiPuChatModelService implements com.mmk.llm.service.ChatModelService {
     @Autowired
-    private ZhiPuAiChatModel chatModel;
+    private ZhiPuAiChatModel zhiPuAiChatModel;
 
     @Value("${spring.ai.zhipuai.chat.options.model}")
     private String modelName;
@@ -31,7 +26,7 @@ public class ZhiPuChatModelService implements ChatModelService {
 
     @Override
     public String chatModel(String msg) {
-        return chatModel.call(
+        return zhiPuAiChatModel.call(
                     new Prompt(
                             msg,
                             ZhiPuAiChatOptions.builder().model(modelName).temperature(temperature).build()
@@ -44,7 +39,7 @@ public class ZhiPuChatModelService implements ChatModelService {
 
     @Override
     public Flux<String> chatModelStream(String msg) {
-        return chatModel.stream(
+        return zhiPuAiChatModel.stream(
                     new Prompt(
                             msg,
                             ZhiPuAiChatOptions.builder().model(modelName).temperature(temperature).build()

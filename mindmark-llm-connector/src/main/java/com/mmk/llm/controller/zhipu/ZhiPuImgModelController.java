@@ -1,6 +1,6 @@
-package com.mmk.llm.controller;
+package com.mmk.llm.controller.zhipu;
 
-import com.mmk.llm.service.ImgModelService;
+import com.mmk.llm.service.zhipu.ZhiPuImgModelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.image.Image;
@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mind-mark")
-public class ImgModelController {
+public class ZhiPuImgModelController {
 
-    private ImgModelService imgModelService;
+    private ZhiPuImgModelService zhiPuImgModelService;
 
     /**
      * 根据文本生成图片
@@ -30,6 +30,6 @@ public class ImgModelController {
      */
     @GetMapping("/genImg")
     public Image genImg(@RequestParam(value = "msg", defaultValue = "根据大漠孤烟直，长河落日圆这句古诗生成一张图片") String msg) {
-        return this.imgModelService.genImg(msg);
+        return this.zhiPuImgModelService.genImg(msg);
     }
 }

@@ -1,11 +1,12 @@
-package com.mmk.llm.service.zhipu;
+package com.mmk.llm.service.openai;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -20,12 +21,16 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
-public class ZhiPuChatService implements com.mmk.llm.service.ChatService {
+public class OpenAiChatService implements com.mmk.llm.service.ChatService {
 
     private final ChatClient chatClient;
 
     private final VectorStore vectorStore;
+
+    public OpenAiChatService(@Qualifier("openAiChatModel") ChatModel chatModel, VectorStore vectorStore) {
+        this.chatClient=ChatClient.builder(chatModel).build();
+        this.vectorStore = vectorStore;
+    }
 
     @Override
     public String chat(String msg) {

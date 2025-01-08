@@ -1,6 +1,6 @@
-package com.mmk.llm.controller;
+package com.mmk.llm.controller.zhipu;
 
-import com.mmk.llm.service.ChatModelService;
+import com.mmk.llm.service.zhipu.ZhiPuChatModelService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,16 +18,15 @@ import reactor.core.publisher.Flux;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mind-mark")
-public class ChatModelController {
-
-    private ChatModelService chatModelService;
+public class ZhiPuChatModelController {
+    private ZhiPuChatModelService zhiPuChatModelService;
 
     @GetMapping("chatModel")
     public String chatModel(@RequestParam(value = "msg", defaultValue = "") String msg) {
         if (msg == null || msg.trim().isEmpty()) {
             return "对话消息不能为空。";
         }
-        return chatModelService.chatModel(msg);
+        return zhiPuChatModelService.chatModel(msg);
     }
 
     @GetMapping(value = "chatModelStream", produces = "text/html;charset=utf-8")
@@ -35,7 +34,6 @@ public class ChatModelController {
         if (msg == null || msg.trim().isEmpty()) {
             return Flux.just("对话消息不能为空。");
         }
-        return chatModelService.chatModelStream(msg);
+        return zhiPuChatModelService.chatModelStream(msg);
     }
-
 }

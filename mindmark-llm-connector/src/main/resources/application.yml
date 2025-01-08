@@ -25,6 +25,15 @@ spring:
   elasticsearch:
     uris: http://192.168.0.105:9200/      #请改成你自己的路径
   ai:
+    openai:     # OpenAI 或者兼容 OpenAI 的大模型
+      base-url: https://ai.gitee.com
+      api-key:  #请改成你自己的 key
+      chat:
+        options:
+          model: Qwen2.5-72B-Instruct
+          temperature: 0.7
+        enabled: true
+      enabled: true
     zhipuai:    #智谱大模型
       api-key:  #请改成你自己的 key
       chat:
@@ -36,6 +45,7 @@ spring:
         options:
           model: embedding-3            #嵌入模型的向量维度需要和下面 elasticsearch 的维度相同，否则无法写入数据
         enabled: true
+      enabled: true
     vectorstore:
       elasticsearch:
         initialize-schema: true         #请不要修改此配置

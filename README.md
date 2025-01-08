@@ -18,11 +18,16 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 
 ## 2.准备工作
 
-### 2.1 申请智谱大模型 api-key
+### 2.1 选择一个大模型
 
-在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) 。
+MindMark 已经测试了 Gitee 和 Zhipu 的大模型，你可以选择其中一个。
 
-把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中。
+| 模型 | 说明 |
+| --- | --- |
+| Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key |
+| 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) 。 |
+
+**把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
 
 ### 2.2 ElasticSearch 安装配置
 

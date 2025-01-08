@@ -8,6 +8,7 @@ import org.springframework.ai.transformer.SummaryMetadataEnricher;
 import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,11 @@ import java.util.List;
 @Slf4j
 @Service
 public class EtlBaseService {
-    @Autowired
-    protected ChatModel chatModel;
+    private final ChatModel chatModel;
+
+    public EtlBaseService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+        this.chatModel = chatModel;
+    }
 
     @Autowired
     protected VectorStore vectorStore;

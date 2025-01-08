@@ -130,6 +130,13 @@
             <version>${spring-ai.version}</version>
         </dependency>
 
+        <!-- OpenAI -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-openai-spring-boot-starter</artifactId>
+            <version>${spring-ai.version}</version>
+        </dependency>
+
         <!-- ZhipuAI -->
         <dependency>
             <groupId>org.springframework.ai</groupId>

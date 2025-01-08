@@ -1,8 +1,10 @@
 package com.mmk.etl.service;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.tika.TikaDocumentReader;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ import java.util.List;
 @Slf4j
 @Service
 public class FileEtlService extends EtlBaseService {
+    public FileEtlService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+        super(chatModel);
+    }
+
     /**
      * 全部使用 Tika 读取文件， Tika 支持大量的文件格式
      * https://tika.apache.org/3.0.0/formats.html

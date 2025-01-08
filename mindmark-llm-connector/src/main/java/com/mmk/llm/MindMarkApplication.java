@@ -11,7 +11,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author 大漠穷秋
  */
 @Slf4j
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@SpringBootApplication(exclude = {
+        DataSourceAutoConfiguration.class
+})
 @ComponentScan(basePackages = "com.mmk")
 @EnableScheduling
 public class MindMarkApplication {

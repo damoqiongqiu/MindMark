@@ -6,6 +6,8 @@ import com.mmk.etl.util.JdbcUrlBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,10 @@ public class MySQLEtlService extends EtlBaseService {
 
     private static final String NAME_REGEX = "^[a-zA-Z0-9_-]{1,128}$";
     private static final ConcurrentHashMap<String, HikariDataSource> dataSourceCache = new ConcurrentHashMap<>();
+
+    public MySQLEtlService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+        super(chatModel);
+    }
 
     /**
      * 创建数据源，根据用户配置动态连接不同的数据库。

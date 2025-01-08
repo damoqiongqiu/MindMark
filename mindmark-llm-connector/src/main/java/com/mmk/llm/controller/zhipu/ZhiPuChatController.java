@@ -1,7 +1,7 @@
-package com.mmk.llm.controller;
+package com.mmk.llm.controller.zhipu;
 
 import com.mmk.llm.annotation.ValidMessage;
-import com.mmk.llm.service.ChatService;
+import com.mmk.llm.service.zhipu.ZhiPuChatService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +23,8 @@ import java.util.Set;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mind-mark")
-public class ChatController {
-
-    private ChatService chatService;
+public class ZhiPuChatController {
+    private ZhiPuChatService zhiPuChatService;
 
     /**
      * 文本
@@ -33,7 +32,7 @@ public class ChatController {
     @ValidMessage
     @GetMapping("chat")
     public String chat(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        return chatService.chat(msg);
+        return zhiPuChatService.chat(msg);
     }
 
     /**
@@ -42,7 +41,7 @@ public class ChatController {
     @ValidMessage
     @GetMapping(value = "chatStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Map<String, Object>> chatStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        return chatService
+        return zhiPuChatService
                 .chatStream(msg)
                 .map(data -> createResponse(data));
     }
@@ -69,7 +68,7 @@ public class ChatController {
     @ValidMessage
     @PostMapping("embedding")
     public String embed(@RequestBody EmbedRequestParam request) throws IOException, InterruptedException {
-        return this.chatService.embed(request.getMsg(), request.getFileIds());
+        return this.zhiPuChatService.embed(request.getMsg(), request.getFileIds());
     }
 
     @Getter
