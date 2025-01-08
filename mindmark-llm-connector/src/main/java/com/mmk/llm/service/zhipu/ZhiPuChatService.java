@@ -26,9 +26,6 @@ public class ZhiPuChatService implements ChatService {
 
     private final ChatClient chatClient;
 
-    /**
-     * TODO: 支持同时使用多种向量数据库。
-     */
     private final VectorStore vectorStore;
 
     @Override

@@ -1,12 +1,12 @@
 package com.mmk.llm.service.zhipu;
 
-import com.mmk.llm.ZhiPuConfig;
 import com.mmk.llm.service.ChatModelService;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.zhipuai.ZhiPuAiChatModel;
 import org.springframework.ai.zhipuai.ZhiPuAiChatOptions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -15,23 +15,26 @@ import reactor.core.publisher.Flux;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
 public class ZhiPuChatModelService implements ChatModelService {
-
     /**
      * 智谱提供的文本嵌入模型
      * 输入和输出长度都有长度限制，参考官方文档：https://bigmodel.cn/dev/api/vector/embedding
      */
+    @Autowired
     private ZhiPuAiChatModel chatModel;
 
-    private final ZhiPuConfig zpConfig;
+    @Value("${spring.ai.zhipuai.chat.options.model}")
+    private String modelName;
+
+    @Value("${spring.ai.zhipuai.chat.options.temperature}")
+    private Double temperature;
 
     @Override
     public String chatModel(String msg) {
         return chatModel.call(
                     new Prompt(
                             msg,
-                            ZhiPuAiChatOptions.builder().model(zpConfig.getModel()).temperature(zpConfig.getTemperature()).build()
+                            ZhiPuAiChatOptions.builder().model(modelName).temperature(temperature).build()
                     )
                 )
                 .getResult()
@@ -44,7 +47,7 @@ public class ZhiPuChatModelService implements ChatModelService {
         return chatModel.stream(
                     new Prompt(
                             msg,
-                            ZhiPuAiChatOptions.builder().model(zpConfig.getModel()).temperature(zpConfig.getTemperature()).build()
+                            ZhiPuAiChatOptions.builder().model(modelName).temperature(temperature).build()
                     )
                 )
                 .map(chatResponse -> chatResponse.getResults().get(0).getOutput().getContent());
