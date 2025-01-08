@@ -1,5 +1,6 @@
 package com.mmk.llm.controller;
 
+import com.mmk.llm.annotation.ValidMessage;
 import com.mmk.llm.service.ChatService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,25 +30,21 @@ public class ChatController {
     /**
      * 文本
      */
+    @ValidMessage
     @GetMapping("chat")
     public String chat(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        if (msg == null || msg.trim().isEmpty()) {
-            return "对话消息不能为空。";
-        }
         return chatService.chat(msg);
     }
 
     /**
      * 文本流
      */
+    @ValidMessage
     @GetMapping(value = "chatStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Map<String, Object>> chatStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        if (msg == null || msg.trim().isEmpty()) {
-            return Flux.just(createResponse( "对话消息不能为空。"));
-        }
         return chatService
                 .chatStream(msg)
-                .map(data -> createResponse( data));
+                .map(data -> createResponse(data));
     }
 
     /**
@@ -69,15 +66,10 @@ public class ChatController {
      * @throws IOException
      * @throws InterruptedException
      */
+    @ValidMessage
     @PostMapping("embedding")
     public String embed(@RequestBody EmbedRequestParam request) throws IOException, InterruptedException {
-        String msg = request.getMsg();
-        if (msg == null || msg.trim().isEmpty()) {
-            return "对话消息不能为空。";
-        }
-
-        Set<String> fileIds = request.getFileIds();
-        return this.chatService.embed(msg, fileIds);
+        return this.chatService.embed(request.getMsg(), request.getFileIds());
     }
 
     @Getter

@@ -31,7 +31,7 @@ public class ZhiPuChatModelService implements ChatModelService {
         return chatModel.call(
                     new Prompt(
                             msg,
-                            ZhiPuAiChatOptions.builder().withModel(zpConfig.getModel()).withTemperature(zpConfig.getTemperature()).build()
+                            ZhiPuAiChatOptions.builder().model(zpConfig.getModel()).temperature(zpConfig.getTemperature()).build()
                     )
                 )
                 .getResult()
@@ -44,7 +44,7 @@ public class ZhiPuChatModelService implements ChatModelService {
         return chatModel.stream(
                     new Prompt(
                             msg,
-                            ZhiPuAiChatOptions.builder().withModel(zpConfig.getModel()).withTemperature(zpConfig.getTemperature()).build()
+                            ZhiPuAiChatOptions.builder().model(zpConfig.getModel()).temperature(zpConfig.getTemperature()).build()
                     )
                 )
                 .map(chatResponse -> chatResponse.getResults().get(0).getOutput().getContent());

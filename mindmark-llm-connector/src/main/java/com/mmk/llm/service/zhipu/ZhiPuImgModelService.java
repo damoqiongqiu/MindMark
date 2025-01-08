@@ -28,7 +28,7 @@ public class ZhiPuImgModelService implements ImgModelService {
         // 如果需要自定义参数，可以参考 ZhiPuAiImageOptions，同时务必参考智谱官方文档（因 AI 开放平台迭代迅速，各家厂商配置项变化快）
         ImageResponse response = imageModel.call(
                 new ImagePrompt(msg,
-                        ZhiPuAiImageOptions.builder().withModel(AiModelEnum.ZHI_PU_MODEL_COG_VIEW3_PLUS.getCode())
+                        ZhiPuAiImageOptions.builder().model(AiModelEnum.ZHI_PU_MODEL_COG_VIEW3_PLUS.getCode())
                                 .build())
         );
         return response.getResult().getOutput();

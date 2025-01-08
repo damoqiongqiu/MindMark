@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -64,7 +64,10 @@ public class ZhiPuChatService implements ChatService {
 
         // 首先查询向量库
         String promptContent = vectorStore
-                .similaritySearch(SearchRequest.query(msg).withTopK(5))
+                .similaritySearch(SearchRequest.builder()
+                        .query(msg)
+                        .topK(5)
+                        .build())
                 .stream()
                 .filter(doc -> {
                     if (CollectionUtils.isEmpty(finalFileIds)) return true;
@@ -72,7 +75,7 @@ public class ZhiPuChatService implements ChatService {
                     String docFileId = fileIdObject != null ? fileIdObject.toString() : null;
                     return finalFileIds.contains(docFileId);
                 })
-                .map(Document::getContent)
+                .map(Document::getText)
                 .filter(StringUtils::hasText)
                 .collect(Collectors.joining(" "));
 
