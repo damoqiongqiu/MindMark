@@ -24,7 +24,7 @@ public class MySQLEtlService extends EtlBaseService {
     private static final String NAME_REGEX = "^[a-zA-Z0-9_-]{1,128}$";
     private static final ConcurrentHashMap<String, HikariDataSource> dataSourceCache = new ConcurrentHashMap<>();
 
-    public MySQLEtlService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+    public MySQLEtlService(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
         super(chatModel);
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class FileEtlService extends EtlBaseService {
-    public FileEtlService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+    public FileEtlService(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
         super(chatModel);
     }
 

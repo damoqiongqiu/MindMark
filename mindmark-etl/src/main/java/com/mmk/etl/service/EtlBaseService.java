@@ -22,7 +22,7 @@ import java.util.List;
 public class EtlBaseService {
     private final ChatModel chatModel;
 
-    public EtlBaseService(@Qualifier("openAiChatModel") ChatModel chatModel) {
+    public EtlBaseService(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
         this.chatModel = chatModel;
     }
 
