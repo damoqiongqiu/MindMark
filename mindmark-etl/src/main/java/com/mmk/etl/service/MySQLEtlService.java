@@ -2,7 +2,7 @@ package com.mmk.etl.service;
 
 import com.mmk.etl.jpa.entity.DbEntity;
 import com.mmk.etl.jpa.entity.TableEntity;
-import com.mmk.etl.util.JdbcUrlBuilder;
+import com.mmk.etl.utils.JdbcUrlBuilder;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.extern.slf4j.Slf4j;

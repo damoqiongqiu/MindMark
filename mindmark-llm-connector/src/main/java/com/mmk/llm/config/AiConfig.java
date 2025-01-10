@@ -31,6 +31,11 @@ public class AiConfig {
         return ChatClient.builder(chatModel).build();
     }
 
+    /**
+     * TODO: FIXME 这里似乎不能直接包装 openAiEmbeddingModel ，因为 application.yml 中没有配置能够兼容 OpenAi 的嵌入模型
+     * @param embeddingModel
+     * @return
+     */
     @Bean(name = "custOpenAiEmbeddingModel")
     public EmbeddingModel openAiEmbeddingModel(@Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
         return embeddingModel;

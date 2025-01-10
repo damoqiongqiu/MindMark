@@ -1,4 +1,4 @@
-package com.mmk.etl.util;
+package com.mmk.etl.utils;
 
 
 import java.security.MessageDigest;

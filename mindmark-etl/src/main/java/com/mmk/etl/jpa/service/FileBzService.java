@@ -5,7 +5,7 @@ import com.mmk.etl.jpa.entity.EmbeddingLogEntity;
 import com.mmk.etl.jpa.entity.FileUploadEntity;
 import com.mmk.etl.jpa.repository.IEmbeddingLogRepository;
 import com.mmk.etl.jpa.repository.IFileUploadRepository;
-import com.mmk.etl.util.HashUtils;
+import com.mmk.etl.utils.HashUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;

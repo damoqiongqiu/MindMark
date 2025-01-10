@@ -1,4 +1,4 @@
-package com.mmk.etl.util;
+package com.mmk.etl.utils;
 
 import com.mmk.etl.jpa.entity.DbEntity;
 import com.mmk.etl.jpa.entity.TableEntity;
