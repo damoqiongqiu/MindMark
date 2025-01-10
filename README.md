@@ -10,8 +10,7 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 
 | 模块 | 版本 | 说明 |
 | --- | --- | --- |
-| OpenJDK 20 | JDK >=18 | - |
-| 智谱大模型 | - | [https://open.bigmodel.cn/](https://open.bigmodel.cn/) |
+| OpenJDK 20 | JDK >=18 | 小于 18 的版本可能存在兼容性问题，未测试。 |
 | SpringAI | 1.0.0-SNAPSHOT | [https://docs.spring.io/spring-ai/reference/index.html](https://docs.spring.io/spring-ai/reference/index.html) |
 | ElasticSearch | 8.17.0 | [https://www.elastic.co/elasticsearch](https://www.elastic.co/elasticsearch) |
 | MariaDB | >=10.0 | [https://mariadb.org/](https://mariadb.org/) |
@@ -87,7 +86,7 @@ docker logs -f kibana
 
 在你的 MariaDB 中创建一个数据库，名称为 mind-mark ，然后把此项目下的 /docs/mind_mark.sql 导入进去，这些是 MindMark 自己使用的表。
 
-检查一下初始数据，mind_mark_rbac_user 和 mind_mark_user_index 这两张表中应该分别有一行初始数据。
+检查一下初始数据， mind_mark_rbac_user 和 mind_mark_user_index 这两张表中应该分别有一行初始数据。
 
 PDM 模型如下：
 
@@ -99,7 +98,7 @@ PDM 模型如下：
 - 修改配置文件（application.yml 和 application-druid.yml 中有一些配置项需要改成你自己的配置）
 - 启动 MindMarkApplication.java
 
-**备注：在启动和运行时，如果看到异常信息可以无视，因为日志级别配置成了 TRACE ，只要能够正常访问即可。**
+**备注：在启动和运行时，如果看到异常信息可以无视，只要能够正常访问即可。**
 
 ## 4.测试效果
 
@@ -112,7 +111,7 @@ MindMark 能够监控两种类型的数据：
 
 #### 4.1.1 让 MindMark 监控指定的数据库表
 
-你可以指定 MindMark 监控其它数据库中的表， MindMark 会把你指定的表中的所有数据全部向量化，并存储到 ElasticSearch 中，处理过程会分页处理。
+你可以指定 MindMark 监控其它数据库中的表， MindMark 会把你指定的表中的所有数据全部向量化，并存储到 ElasticSearch 中，处理过程会分页。
 
 **注意：在 MindMark 当前的实现中，被监控的表必须带有自增主键，否则 MindMark 无法把表中的数据进行向量化，因为不能记录已经处理了哪些数据行，在后续的版本中再考虑改进。你需要按照自己的情况，指定 MindMark 去监控哪个库中的哪张表，如果不提供这些配置， MindMark 不会监控任何数据库。**
 
@@ -153,7 +152,3 @@ SpringAI 官方文档：https://docs.spring.io/spring-ai/reference/index.html
 MIT
 
 （补充声明：您可以随意使用此项目，但是本人不对您使用此项目造成的任何损失承担责任。）
-
-## 8.联系我
-
-VX: lanxinshuma
