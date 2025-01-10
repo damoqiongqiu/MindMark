@@ -128,13 +128,17 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 
 ![MindMark React Interface](./docs/imgs/mind-mark-react.png)
 
-也可以使用 Postman 来测试接口。
+也可以使用 Postman 来测试接口（直接用 Chrome 浏览器也可以测试）。
 
 ![Test 1](./docs/imgs/test-1.png)
 
 ![Test 2](./docs/imgs/test-2.png)
 
-直接用 Chrome 浏览器也可以测试。
+切换不同的模型：
+
+![11.png](./docs/imgs/11.png)
+
+![12.png](./docs/imgs/12.png)
 
 ## 5.系统架构
 
