@@ -31,10 +31,9 @@ public class EtlBaseService {
 
     /**
      * 把 Document 分割成小块
-     * TODO: 测试中文分块的效果
-     * TODO: 测试每个块的长度，尽量兼容不同的大模型
+     * TODO: 引入 LangChain 或者其它工具，对文本切块过程进行优化
      */
-    public List<Document> splitDocument(List<Document> documents) {
+    public List<Document> splitDocuments(List<Document> documents) {
         TokenTextSplitter splitter = new TokenTextSplitter(512, 50, 64, 8000, true);
         return splitter.split(documents);
     }
@@ -64,7 +63,7 @@ public class EtlBaseService {
     /**
      * 存储到某种向量数据库
      */
-    public List<Document> saveDocument(List<Document> documents) throws InterruptedException {
+    public List<Document> addDocument(List<Document> documents) {
         log.debug("开始写入...");
 
         // 智谱大模型文档： https://bigmodel.cn/dev/api/vector/embedding

@@ -110,10 +110,10 @@ public class WatchFileTimer {
             documents = fileEtlService.summaryDocuments(documents);
 
             log.debug("正在拆分文档...");
-            documents = fileEtlService.splitDocument(documents);
+            documents = fileEtlService.splitDocuments(documents);
 
             log.debug("正在保存文档...");
-            documents = fileEtlService.saveDocument(documents);
+            documents = fileEtlService.addDocument(documents);
 
             fileBzService.saveFileEmbeddingLog(fileId);
 

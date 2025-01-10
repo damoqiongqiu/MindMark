@@ -149,8 +149,8 @@ public class WatchDataBaseTimer {
         // NOTE: 提取摘要和关键词的处理速度非常慢
         documents = mySQLEtlService.keywordDocuments(documents);
         documents = mySQLEtlService.summaryDocuments(documents);
-        documents = mySQLEtlService.splitDocument(documents);
-        documents = mySQLEtlService.saveDocument(documents);
+        documents = mySQLEtlService.splitDocuments(documents);
+        documents = mySQLEtlService.addDocument(documents);
         return documents;
     }
 

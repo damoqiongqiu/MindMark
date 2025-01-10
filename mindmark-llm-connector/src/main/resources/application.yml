@@ -27,7 +27,7 @@ spring:
   ai:
     openai:     # OpenAI 或者兼容 OpenAI 的大模型
       base-url: https://ai.gitee.com
-      api-key:  #请改成你自己的 key
+      api-key: #请改成你自己的 key
       chat:
         options:
           model: Qwen2.5-72B-Instruct

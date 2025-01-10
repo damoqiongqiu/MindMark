@@ -60,6 +60,8 @@ public class ChatServiceImpl implements ChatService {
         Set<String> finalFileIds = (fileIds == null) ? new HashSet<>() : fileIds;
 
         // 首先查询向量库
+        // TODO: 引入工具库，更好地识别用户的 prompt
+        // TODO: 引入工具库，进行多路召回，并对结果重新进行 Ranking
         String promptContent = vectorStore
                 .similaritySearch(SearchRequest.builder()
                         .query(msg)
