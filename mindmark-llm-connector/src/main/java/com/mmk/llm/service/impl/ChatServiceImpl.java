@@ -1,5 +1,6 @@
 package com.mmk.llm.service.impl;
 
+import com.mmk.llm.constant.ModelType;
 import com.mmk.llm.service.ChatService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -23,15 +25,34 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class ChatServiceImpl implements ChatService {
+    @Qualifier("zhiPuAiChatClient")
+    private final ChatClient zhiPuAiChatClient;
 
-    private final ChatClient chatClient;
+    @Qualifier("openAiChatClient")
+    private final ChatClient openAiChatClient;
 
     private final VectorStore vectorStore;
 
+    private ChatClient getChatClient(String modelType) {
+        switch (ModelType.normalize(modelType)) {
+            case ModelType.OPENAI:
+                return openAiChatClient;
+            case ModelType.ZHIPUAI:
+                return zhiPuAiChatClient;
+            default:
+                return zhiPuAiChatClient;
+        }
+    }
+
     @Override
     public String chat(String msg) {
+        return chat(msg, ModelType.DEFAULT);
+    }
+
+    @Override
+    public String chat(String msg, String modelType) {
         log.info("Processing chat request for message: {}", msg);
-        return chatClient
+        return getChatClient(modelType)
                 .prompt()
                 .user(msg)
                 .call()
@@ -40,21 +61,24 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public Flux<String> chatStream(String msg) {
+        return chatStream(msg, ModelType.DEFAULT);
+    }
+
+    @Override
+    public Flux<String> chatStream(String msg, String modelType) {
         log.info("Starting chat stream for message: {}", msg);
-        return chatClient
+        return getChatClient(modelType)
                 .prompt()
                 .user(msg)
                 .stream()
                 .content();
     }
 
-    /**
-     * 根据用户消息和指定的文件ID进行查询
-     * @param msg
-     * @param fileIds
-     * @return
-     */
     public String embed(String msg, Set<String> fileIds) {
+        return embed(msg, fileIds, ModelType.DEFAULT);
+    }
+
+    public String embed(String msg, Set<String> fileIds, String modelType) {
         log.debug("embedding... {}", msg);
 
         Set<String> finalFileIds = (fileIds == null) ? new HashSet<>() : fileIds;
@@ -85,7 +109,7 @@ public class ChatServiceImpl implements ChatService {
 
         log.debug("Prompt content: {}", promptContent);
 
-        return chatClient
+        return getChatClient(modelType)
                 .prompt(promptContent)  //把 prompt 传递给大模型
                 .user(msg)              //用户发送的内容
                 .call()

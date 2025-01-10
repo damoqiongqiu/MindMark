@@ -12,9 +12,12 @@ import java.util.Set;
 public interface ChatService {
 
     String chat(String msg);
+    String chat(String msg, String modelType);
 
     Flux<String> chatStream(String msg);
+    Flux<String> chatStream(String msg, String modelType);
 
     String embed(String msg, Set<String> fileIds) throws IOException, InterruptedException;
+    String embed(String msg, Set<String> fileIds, String modelType) throws IOException, InterruptedException;
 
 }

@@ -29,10 +29,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @Service
 @AllArgsConstructor
 public class WatchDataBaseTimer {
+    private EtlConfig etlConfig;
 
     private DataBaseBzService dataBaseBzService;
-
-    private EtlConfig etlConfig;
 
     private MySQLEtlService mySQLEtlService;
 

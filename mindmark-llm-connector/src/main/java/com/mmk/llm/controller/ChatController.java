@@ -1,7 +1,8 @@
 package com.mmk.llm.controller;
 
 import com.mmk.llm.annotation.ValidMessage;
-import com.mmk.llm.service.impl.ChatServiceImpl;
+import com.mmk.llm.constant.ModelType;
+import com.mmk.llm.service.ChatService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,23 +17,27 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author 大漠穷秋
  * 用来处理用户交互
+ * @author 大漠穷秋
  */
 @Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/mind-mark")
 public class ChatController {
-    private ChatServiceImpl chatService;
+    
+    private final ChatService chatService;
 
     /**
      * 文本
      */
     @ValidMessage
     @GetMapping("chat")
-    public String chat(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        return chatService.chat(msg);
+    public String chat(
+            @RequestParam(value = "msg", defaultValue = "") String msg,
+            @RequestParam(value = "modelType", defaultValue = ModelType.ZHIPUAI) String modelType
+    ) {
+        return chatService.chat(msg, modelType);
     }
 
     /**
@@ -40,35 +45,33 @@ public class ChatController {
      */
     @ValidMessage
     @GetMapping(value = "chatStream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Map<String, Object>> chatStream(@RequestParam(value = "msg", defaultValue = "") String msg) {
-        return chatService
-                .chatStream(msg)
-                .map(data -> createResponse(data));
+    public Flux<Map<String, Object>> chatStream(
+            @RequestParam(value = "msg", defaultValue = "") String msg,
+            @RequestParam(value = "modelType", defaultValue = ModelType.ZHIPUAI) String modelType
+    ) {
+        return chatService.chatStream(msg, modelType)
+                .map(this::createResponse);
+    }
+
+    /**
+     * 根据嵌入的文本进行查询
+     */
+    @ValidMessage
+    @PostMapping("embedding")
+    public String embed(
+            @RequestBody EmbedRequestParam request,
+            @RequestParam(value = "modelType", defaultValue = ModelType.ZHIPUAI) String modelType
+    ) throws IOException, InterruptedException {
+        return this.chatService.embed(request.getMsg(), request.getFileIds(), modelType);
     }
 
     /**
      * 辅助方法用于构建 JSON 响应
-     * @param content
-     * @return
      */
     private Map<String, Object> createResponse(String content) {
         Map<String, Object> response = new HashMap<>();
         response.put("content", content);
         return response;
-    }
-
-
-    /**
-     * 根据嵌入的文本进行查询
-     * @param request
-     * @return
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    @ValidMessage
-    @PostMapping("embedding")
-    public String embed(@RequestBody EmbedRequestParam request) throws IOException, InterruptedException {
-        return this.chatService.embed(request.getMsg(), request.getFileIds());
     }
 
     @Getter

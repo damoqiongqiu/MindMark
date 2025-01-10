@@ -8,18 +8,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+/**
+ * 目前已经引入并测试： openAiChatModel 和 zhiPuAiChatModel
+ * @author 大漠穷秋
+ */
 @Configuration
 public class AiConfig {
-    //可选项有： openAiChatModel 和 zhiPuAiChatModel
     @Primary
     @Bean
-    public ChatClient chatClient(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
+    public ChatClient zhiPuAiChatClient(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
         return ChatClient.builder(chatModel).build();
     }
 
     @Primary
+    @Bean(name = "custZhiPuAiEmbeddingModel")
+    public EmbeddingModel zhiPuAiEmbeddingModel(@Qualifier("zhiPuAiEmbeddingModel") EmbeddingModel embeddingModel) {
+        return embeddingModel;
+    }
+
     @Bean
-    public EmbeddingModel primaryEmbeddingModel(@Qualifier("zhiPuAiEmbeddingModel") EmbeddingModel zhiPuAiEmbeddingModel) {
-        return zhiPuAiEmbeddingModel;
+    public ChatClient openAiChatClient(@Qualifier("openAiChatModel") ChatModel chatModel) {
+        return ChatClient.builder(chatModel).build();
+    }
+
+    @Bean(name = "custOpenAiEmbeddingModel")
+    public EmbeddingModel openAiEmbeddingModel(@Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+        return embeddingModel;
     }
 }

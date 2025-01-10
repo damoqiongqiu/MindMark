@@ -9,7 +9,6 @@ import org.springframework.ai.transformer.splitter.TokenTextSplitter;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,13 +17,11 @@ import java.util.List;
  * @author 大漠穷秋
  */
 @Slf4j
-@Service
-public class EtlBaseService {
-    private final ChatModel chatModel;
-
-    public EtlBaseService(@Qualifier("zhiPuAiChatModel") ChatModel chatModel) {
-        this.chatModel = chatModel;
-    }
+public abstract class EtlBaseService {
+    //TODO: 这里似乎应该默认选择 OpenAiChatModel ，因为绝大多数模型会选择兼容 OpenAi
+    @Autowired
+    @Qualifier("zhiPuAiChatModel")
+    protected ChatModel chatModel;
 
     @Autowired
     protected VectorStore vectorStore;
