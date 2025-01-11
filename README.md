@@ -25,6 +25,7 @@ MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 | --- | --- |
 | Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key |
 | 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) 。 |
+| Ollama | Ollama本地大模型，本项目实现的是llama3.2，可以根据需求自行替换[https://ollama.com/) 。 |
 
 **把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
 
@@ -91,6 +92,13 @@ docker logs -f kibana
 PDM 模型如下：
 
 ![PDM Model](./docs/imgs/pdm.png)
+
+### 2.4 Ollama 的安装运行
+
+根据[官网下载](https://ollama.com/download)安装对应操作系统的 ollama ，并运行对应模型，以本项目使用的 llama3.2 为例
+```bash
+ollama run llama3.2:latest
+```
 
 ## 3. 启动项目
 

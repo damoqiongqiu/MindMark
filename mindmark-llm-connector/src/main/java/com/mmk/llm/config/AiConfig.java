@@ -3,6 +3,7 @@ package com.mmk.llm.config;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,20 @@ public class AiConfig {
      */
     @Bean(name = "custOpenAiEmbeddingModel")
     public EmbeddingModel openAiEmbeddingModel(@Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+        return embeddingModel;
+    }
+
+    @Bean(name = "ollamaAiChatClient")
+    public ChatClient ollamaAiChatClient(@Qualifier("ollamaChatModel") ChatModel chatModel) {
+        return ChatClient.builder(chatModel).build();
+    }
+
+    /**
+     * @param embeddingModel
+     * @return
+     */
+    @Bean(name = "custOllamaAiEmbeddingModel")
+    public EmbeddingModel custOllamaAiEmbeddingModel(@Qualifier("ollamaEmbeddingModel") OllamaEmbeddingModel embeddingModel) {
         return embeddingModel;
     }
 }

@@ -2,7 +2,7 @@ package com.mmk.llm.service.impl;
 
 import com.mmk.llm.constant.ModelType;
 import com.mmk.llm.service.ChatService;
-import lombok.AllArgsConstructor;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
@@ -23,15 +23,21 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Service
-@AllArgsConstructor
 public class ChatServiceImpl implements ChatService {
     @Qualifier("zhiPuAiChatClient")
-    private final ChatClient zhiPuAiChatClient;
+    @Resource
+    private ChatClient zhiPuAiChatClient;
 
     @Qualifier("openAiChatClient")
-    private final ChatClient openAiChatClient;
+    @Resource
+    private ChatClient openAiChatClient;
 
-    private final VectorStore vectorStore;
+    @Qualifier("ollamaAiChatClient")
+    @Resource
+    private ChatClient ollamaAiChatClient;
+
+    @Resource
+    private VectorStore vectorStore;
 
     private ChatClient getChatClient(String modelType) {
         switch (ModelType.normalize(modelType)) {
@@ -39,6 +45,8 @@ public class ChatServiceImpl implements ChatService {
                 return openAiChatClient;
             case ModelType.ZHIPUAI:
                 return zhiPuAiChatClient;
+            case ModelType.OLLAMA:
+                return ollamaAiChatClient;
             default:
                 return zhiPuAiChatClient;
         }

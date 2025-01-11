@@ -41,6 +41,7 @@
         <!-- AI Related -->
         <zhipu-ai.version>1.0.0-SNAPSHOT</zhipu-ai.version>
         <mindmark.version>1.0.0-SNAPSHOT</mindmark.version>
+        <ollama.version>1.0.0-SNAPSHOT</ollama.version>
 
         <!-- Database -->
         <mysql.connector.version>8.2.0</mysql.connector.version>
@@ -142,6 +143,13 @@
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-zhipuai-spring-boot-starter</artifactId>
             <version>${zhipu-ai.version}</version>
+        </dependency>
+
+        <!-- ollama -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
+            <version>${ollama.version}</version>
         </dependency>
     </dependencies>
 
