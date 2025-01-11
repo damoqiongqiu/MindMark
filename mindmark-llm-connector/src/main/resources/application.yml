@@ -46,6 +46,12 @@ spring:
           model: embedding-3            #嵌入模型的向量维度需要和下面 elasticsearch 的维度相同，否则无法写入数据
         enabled: true
       enabled: true
+    ollama: # 这里 Ollama 暂时只演示集成 llama3.2 模型 (可自行替换其他模型)
+      base-url: http://localhost:11434
+      chat:
+        options:
+          model: llama3.2
+        enabled: true
     vectorstore:
       elasticsearch:
         initialize-schema: true         #请不要修改此配置
