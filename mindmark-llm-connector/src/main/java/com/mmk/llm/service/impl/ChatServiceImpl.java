@@ -40,16 +40,12 @@ public class ChatServiceImpl implements ChatService {
     private VectorStore vectorStore;
 
     private ChatClient getChatClient(String modelType) {
-        switch (ModelType.normalize(modelType)) {
-            case ModelType.OPENAI:
-                return openAiChatClient;
-            case ModelType.ZHIPUAI:
-                return zhiPuAiChatClient;
-            case ModelType.OLLAMA:
-                return ollamaAiChatClient;
-            default:
-                return zhiPuAiChatClient;
-        }
+        return switch (ModelType.normalize(modelType)) {
+            case ModelType.OPENAI -> openAiChatClient;
+            case ModelType.ZHIPUAI -> zhiPuAiChatClient;
+            case ModelType.OLLAMA -> ollamaAiChatClient;
+            default -> zhiPuAiChatClient;
+        };
     }
 
     @Override
