@@ -24,8 +24,8 @@ MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 | 模型 | 说明 |
 | --- | --- |
 | Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key |
-| 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) 。 |
-| Ollama | Ollama本地大模型，本项目实现的是llama3.2，可以根据需求自行替换[https://ollama.com/) 。 |
+| 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/)  |
+| Ollama | Ollama本地大模型，本项目实现的是llama3.2，可以根据需求自行替换，[https://ollama.com/]([https://ollama.com/)  |
 
 **把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
 
