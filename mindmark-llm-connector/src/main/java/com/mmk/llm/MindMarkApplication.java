@@ -14,7 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication(exclude = {
         DataSourceAutoConfiguration.class
 })
-@ComponentScan(basePackages = "com.mmk")
+@ComponentScan(basePackages = {"com.mmk.llm", "com.mmk.etl"})
 @EnableScheduling
 public class MindMarkApplication {
 

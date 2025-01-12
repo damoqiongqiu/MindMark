@@ -21,38 +21,40 @@ public class AiConfig {
         return ChatClient.builder(chatModel).build();
     }
 
-    @Primary
-    @Bean(name = "custZhiPuAiEmbeddingModel")
-    public EmbeddingModel zhiPuAiEmbeddingModel(@Qualifier("zhiPuAiEmbeddingModel") EmbeddingModel embeddingModel) {
-        return embeddingModel;
-    }
+//    @Primary
+//    @Bean(name = "custZhiPuAiEmbeddingModel")
+//    public EmbeddingModel zhiPuAiEmbeddingModel(@Qualifier("zhiPuAiEmbeddingModel") EmbeddingModel embeddingModel) {
+//        return embeddingModel;
+//    }
 
     @Bean
     public ChatClient openAiChatClient(@Qualifier("openAiChatModel") ChatModel chatModel) {
         return ChatClient.builder(chatModel).build();
     }
 
-    /**
-     * TODO: FIXME 这里似乎不能直接包装 openAiEmbeddingModel ，因为 application.yml 中没有配置能够兼容 OpenAi 的嵌入模型
-     * @param embeddingModel
-     * @return
-     */
-    @Bean(name = "custOpenAiEmbeddingModel")
-    public EmbeddingModel openAiEmbeddingModel(@Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
-        return embeddingModel;
-    }
+//    /**
+//     * TODO: FIXME 这里似乎不能直接包装 openAiEmbeddingModel ，因为 application.yml 中没有配置能够兼容 OpenAi 的嵌入模型
+//     * @param embeddingModel
+//     * @return
+//     */
+//    @Bean(name = "custOpenAiEmbeddingModel")
+//    @Primary
+//    public EmbeddingModel openAiEmbeddingModel(@Qualifier("openAiEmbeddingModel") EmbeddingModel embeddingModel) {
+//        return embeddingModel;
+//    }
 
     @Bean(name = "ollamaAiChatClient")
     public ChatClient ollamaAiChatClient(@Qualifier("ollamaChatModel") ChatModel chatModel) {
         return ChatClient.builder(chatModel).build();
     }
 
-    /**
-     * @param embeddingModel
-     * @return
-     */
-    @Bean(name = "custOllamaAiEmbeddingModel")
-    public EmbeddingModel custOllamaAiEmbeddingModel(@Qualifier("ollamaEmbeddingModel") OllamaEmbeddingModel embeddingModel) {
-        return embeddingModel;
-    }
+//    /**
+//     * @param embeddingModel
+//     * @return
+//     */
+//    @Bean(name = "custOllamaAiEmbeddingModel")
+//    @Primary
+//    public EmbeddingModel custOllamaAiEmbeddingModel(@Qualifier("ollamaEmbeddingModel") OllamaEmbeddingModel embeddingModel) {
+//        return embeddingModel;
+//    }
 }

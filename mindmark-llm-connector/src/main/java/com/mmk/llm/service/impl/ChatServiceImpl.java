@@ -8,6 +8,7 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -29,7 +30,7 @@ public class ChatServiceImpl implements ChatService {
     private ChatClient zhiPuAiChatClient;
 
     @Qualifier("openAiChatClient")
-    @Resource
+    @Autowired
     private ChatClient openAiChatClient;
 
     @Qualifier("ollamaAiChatClient")

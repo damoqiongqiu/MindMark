@@ -7,7 +7,7 @@ application:
     page-size: 15                           #每页显示的数据条数，所有的分页都会使用这个参数
     watch-file:
       enabled: true                         #是否开启文件监控功能，开启后会定时扫描目录中的数据，并进行嵌入操作
-      file-path: C:/mindmark/upload         #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作
+      file-path: /Users/nanke/workSpace/uploadDir2/         #文件上传目录，请根据自己服务器情况配置，定时任务会自动扫描这个目录进行嵌入操作
       scan-interval: 30000                  #每隔 N 秒扫描一次目录，监控发生变化的文件，注意大模型嵌入调用的费用问题
     watch-mysql:
       enabled: true
@@ -17,25 +17,25 @@ application:
       user-row-limit: 1000                  #数据分页参数，每次获取多少行用户记录
 
 server:
-  port: 9090
+  port: 7070
 
 spring:
   profiles:
     active: druid
   elasticsearch:
-    uris: http://192.168.0.105:9200/      #请改成你自己的路径
+    uris: http://127.0.0.1:9200/      #请改成你自己的路径
   ai:
     openai:     # OpenAI 或者兼容 OpenAI 的大模型
-      base-url: https://ai.gitee.com
-      api-key:  #请改成你自己的 key
+      base-url: https://api.oaipro.com
+      api-key: sk-ckUN5lhLOHXZzagggqAvTTKPhbU27a1K9gVZkHZK9UNxaavR #请改成你自己的 key
       chat:
         options:
-          model: Qwen2.5-72B-Instruct
+          model: gpt-3.5-turbo
           temperature: 0.7
         enabled: true
       enabled: true
     zhipuai:    #智谱大模型
-      api-key:  #请改成你自己的 key
+      api-key: bf7faa05e59aa1a9e86a5829c60fa643.P5TqB2LGfg9hNH5C #请改成你自己的 key
       chat:
         options:
           temperature: 0.7
