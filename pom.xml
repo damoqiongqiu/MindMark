@@ -29,10 +29,11 @@
         <spring.jdbc.version>6.1.14</spring.jdbc.version>
         <spring.boot.version>3.3.0</spring.boot.version>
         <spring-ai.version>1.0.0-SNAPSHOT</spring-ai.version>
-        <!--        模块版本-->
+        <!--模块版本-->
         <mindmark.version>1.0.0-SNAPSHOT</mindmark.version>
 
         <!-- AI Related -->
+        <spring.ai.core.version>1.0.0-SNAPSHOT</spring.ai.core.version>
         <zhipu-ai.version>1.0.0-SNAPSHOT</zhipu-ai.version>
         <mindmark.version>1.0.0-SNAPSHOT</mindmark.version>
         <ollama.version>1.0.0-SNAPSHOT</ollama.version>
@@ -51,6 +52,8 @@
         <aspectjrt.version>1.8.13</aspectjrt.version>
         <junit.version>4.12</junit.version>
         <lombok.version>1.18.36</lombok.version>
+        <maven.plugin.version>3.4.1</maven.plugin.version>
+        <hanlp.version>portable-1.8.4</hanlp.version>
     </properties>
 
     <!-- Modules -->
@@ -71,6 +74,33 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-core</artifactId>
+                <version>${spring-ai.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+<!--  数据库相关   -->
+            <!-- Database Dependencies -->
+            <dependency>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>${mysql.connector.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-3-starter</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring.jdbc.version}</version>
+            </dependency>
+
 
             <!-- Tools -->
             <dependency>
@@ -111,11 +141,7 @@
                 <artifactId>spring-ai-spring-boot-autoconfigure</artifactId>
                 <version>${spring-ai.version}</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.ai</groupId>
-                <artifactId>spring-ai-elasticsearch-store</artifactId>
-                <version>${spring-ai.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-elasticsearch-store-spring-boot-starter</artifactId>
@@ -126,6 +152,14 @@
                 <artifactId>spring-ai-pdf-document-reader</artifactId>
                 <version>${spring-ai.version}</version>
             </dependency>
+
+            <!-- NLP Dependencies -->
+            <dependency>
+                <groupId>com.hankcs</groupId>
+                <artifactId>hanlp</artifactId>
+                <version>${hanlp.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-tika-document-reader</artifactId>
@@ -139,6 +173,24 @@
     </dependencies>
     <!-- Build -->
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>${maven.plugin.version}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -151,18 +203,6 @@
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
                 </configuration>
             </plugin>
         </plugins>

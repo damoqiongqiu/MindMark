@@ -1,6 +1,7 @@
 package com.mmk.etl.service;
 
 import com.mmk.etl.utils.TextSplitter;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.document.Document;
@@ -15,6 +16,7 @@ import java.util.List;
 
 /**
  * ETL 相关的服务，用来切片、嵌入、存储
+ *
  * @author 大漠穷秋
  */
 @Slf4j
@@ -24,7 +26,7 @@ public abstract class EtlBaseService {
     @Qualifier("zhiPuAiChatModel")
     protected ChatModel chatModel;
 
-    @Autowired
+    @Resource
     protected VectorStore vectorStore;
 
     /**
@@ -45,17 +47,19 @@ public abstract class EtlBaseService {
 
     /**
      * 写入摘要，不改变文件本身的内容，只向文件的元数据中写入摘要。
+     *
      * @param documents
      * @return
      */
     public List<Document> summaryDocuments(List<Document> documents) {
         log.info("开始提取摘要...");
-        SummaryMetadataEnricher summaryEnricher =  new SummaryMetadataEnricher(chatModel,List.of(SummaryMetadataEnricher.SummaryType.CURRENT));
+        SummaryMetadataEnricher summaryEnricher = new SummaryMetadataEnricher(chatModel, List.of(SummaryMetadataEnricher.SummaryType.CURRENT));
         return summaryEnricher.apply(documents);
     }
 
     /**
      * 写入关键词，不改变文件本身的内容，只向文件的元数据中写入关键词。
+     *
      * @param documents
      * @return
      */
@@ -80,7 +84,7 @@ public abstract class EtlBaseService {
         vectorStore.add(documents);
 
         //TODO: 强制 ElasticSearch 立即刷新索引
-        
+
         return documents;
     }
 }

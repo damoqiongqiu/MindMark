@@ -30,7 +30,7 @@ public class ChatServiceImpl implements ChatService {
     private ChatClient zhiPuAiChatClient;
 
     @Qualifier("openAiChatClient")
-    @Autowired
+    @Resource
     private ChatClient openAiChatClient;
 
     @Qualifier("ollamaAiChatClient")
