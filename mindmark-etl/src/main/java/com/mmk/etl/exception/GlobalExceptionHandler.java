@@ -16,6 +16,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ResponseEntity<String> handleMaxSizeException(MaxUploadSizeExceededException e) {
         // TODO 提醒文本国际化
-        return ResponseEntity.badRequest().body("The file size must not be larger than 50MB.");
+        return ResponseEntity.badRequest().body("The file size must not be larger than 5MB.");
     }
 }

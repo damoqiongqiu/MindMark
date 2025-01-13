@@ -13,7 +13,6 @@
     </parent>
 
     <!-- Project Information -->
-    <groupId>com.mmk</groupId>
     <artifactId>mindmark-llm-connector</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>mindmark-llm-connector</name>
@@ -25,6 +24,10 @@
             <groupId>com.mmk</groupId>
             <artifactId>mindmark-etl</artifactId>
             <version>${mindmark.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 </project>
