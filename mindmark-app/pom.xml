@@ -9,7 +9,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>mind-mark-app</artifactId>
+	<artifactId>mindmark-app</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<name>mindmark-app</name>
 	<description>项目启动类</description>
