@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="nicefish">
+    <!-- 磁盘缓存路径，可以修改其它目录 -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <defaultCache
+            maxElementsInMemory="10000"
+            eternal="false"
+            timeToIdleSeconds="0"
+            timeToLiveSeconds="0"
+            overflowToDisk="false"
+            diskPersistent="false"
+            diskExpiryThreadIntervalSeconds="120"
+            statistics="true"
+    />
+
+    <!-- 验证缓存 -->
+    <cache name="authenticationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <!-- 鉴权缓存 -->
+    <cache name="authorizationCache"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="0"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <!-- Session 缓存 -->
+    <cache name="shiro-activeSessionCache"
+            maxElementsInMemory="10000"
+            overflowToDisk="true"
+            eternal="true"
+            timeToLiveSeconds="0"
+            timeToIdleSeconds="0"
+            diskPersistent="true"
+            diskExpiryThreadIntervalSeconds="600"
+            statistics="true"/>
+    <!--
+        用来监控 ehcache ，生产环境需要删掉 
+        监控工具看起来有点老，需要一款新的工具来替代
+        https://www.ehcache.org/documentation/2.7/operations/monitor.html
+    -->
+    <cacheManagerPeerListenerFactory class="org.terracotta.ehcachedx.monitor.probe.ProbePeerListenerFactory" properties="monitorAddress=localhost, monitorPort=9889" />
+</ehcache>

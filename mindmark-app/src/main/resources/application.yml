@@ -75,3 +75,30 @@ logging:
     org.hibernate.engine.QueryParameters: DEBUG
     org.hibernate.engine.query.HQLQueryPlan: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: DEBUG
+
+
+# Shiro 相关的配置， ShiroConfig.java 配置类会读取这些配置项。
+shiro:
+  user:
+    loginUrl: /mind-mark/auth/shiro/login
+    unauthorizedUrl: /mind-mark/auth/shiro/unauth
+    indexUrl: /index
+    captchaEnabled: true
+    captchaType: math
+  cookie:
+    domain:
+    path: /
+    httpOnly: false
+    maxAge: 259200000 #ms
+    secure: false
+  session:
+    timeout: 259200000 #ms
+    dbSyncPeriod: 1
+    validationInterval: 10000 #ms
+    maxSession: -1
+    kickoutAfter: false
+
+xss:
+  enabled: true
+  excludes: /system/notice/*
+  urlPatterns: /system/*,/monitor/*,/tool/*

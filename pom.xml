@@ -54,6 +54,11 @@
         <lombok.version>1.18.36</lombok.version>
         <maven.plugin.version>3.4.1</maven.plugin.version>
         <hanlp.version>portable-1.8.4</hanlp.version>
+
+        <!-- shiro 与 springboot 版本存在依赖关系-->
+        <shiro.version>1.12.0</shiro.version>
+        <userAgentUtils.version>1.19</userAgentUtils.version>
+        <ehcacheProbe.version>1.0.2</ehcacheProbe.version>
     </properties>
 
     <!-- Modules -->
@@ -62,6 +67,8 @@
         <module>mindmark-app</module>
         <module>mindmark-etl</module>
         <module>mindmark-llm-connector</module>
+        <module>mindmark-core</module>
+        <module>mindmark-rbac</module>
     </modules>
 
     <!-- Dependencies -->
@@ -82,7 +89,7 @@
                 <scope>compile</scope>
             </dependency>
 
-<!--  数据库相关   -->
+            <!--  数据库相关   -->
             <!-- Database Dependencies -->
             <dependency>
                 <groupId>com.mysql</groupId>
@@ -164,6 +171,52 @@
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-tika-document-reader</artifactId>
                 <version>${spring-ai.version}</version>
+            </dependency>
+
+            <!--            shiro-->
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-spring</artifactId>
+                <classifier>jakarta</classifier>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-core</artifactId>
+                <classifier>jakarta</classifier>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-web</artifactId>
+                <classifier>jakarta</classifier>
+                <version>${shiro.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.shiro</groupId>
+                <artifactId>shiro-ehcache</artifactId>
+                <version>${shiro.version}</version>
+            </dependency>
+            <!--
+           用来监控 ehcache ，生产环境需要删掉
+           监控工具看起来有点老，需要一款新的工具来替代
+           https://www.ehcache.org/documentation/2.7/operations/monitor.html
+       -->
+            <dependency>
+                <groupId>org.terracotta</groupId>
+                <artifactId>ehcache-probe</artifactId>
+                <version>${ehcacheProbe.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.penggle</groupId>
+                <artifactId>kaptcha</artifactId>
+                <version>${kaptcha.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>eu.bitwalker</groupId>
+                <artifactId>UserAgentUtils</artifactId>
+                <version>${bitwalker.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

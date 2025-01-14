@@ -14,8 +14,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Slf4j
 @SpringBootApplication
 @ComponentScan(basePackages = "com.mmk")
-@EnableJpaRepositories(basePackages = "com.mmk.etl.jpa.repository")
-@EntityScan(basePackages = "com.mmk.etl.jpa.entity")
+@EnableJpaRepositories(basePackages = {"com.mmk.etl.jpa.repository","com.mmk.rbac.jpa.repository"})
+@EntityScan(basePackages = {"com.mmk.etl.jpa.entity","com.mmk.rbac.jpa.entity"})
 @EnableScheduling
 public class MindmarkApplication {
     public static void main(String[] args) {
