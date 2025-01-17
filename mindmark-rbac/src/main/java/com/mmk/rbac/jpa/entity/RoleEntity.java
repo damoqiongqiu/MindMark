@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "mindmark_rbac_role")
+@Table(name = "mind_mark_rbac_role")
 public class RoleEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,7 +10,7 @@ import java.io.Serializable;
 @DynamicInsert
 @DynamicUpdate
 @IdClass(RoleApiEntity.class)
-@Table(name = "mindmark_rbac_role_api")
+@Table(name = "mind_mark_rbac_role_api")
 public class RoleApiEntity implements Serializable {
     @Id
     @Column(name="role_id")

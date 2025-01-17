@@ -14,7 +14,7 @@ import java.util.Date;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "mindmark_rbac_session")
+@Table(name = "mind_mark_rbac_session")
 public class MindMarkSessionEntity implements Serializable {
     @Id
     @Column(name = "session_id")

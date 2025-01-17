@@ -13,6 +13,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -76,13 +77,13 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setLoginUrl(loginUrl);
         shiroFilterFactoryBean.setUnauthorizedUrl(unauthorizedUrl);
 
-        Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
+        Map<String, Filter> filters = new LinkedHashMap<>();
         filters.put("captchaValidateFilter", captchaValidateFilter());
         shiroFilterFactoryBean.setFilters(filters);
 
         //所有静态资源交给Nginx管理，这里只配置与 shiro 相关的过滤器。
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-//        TODO 增加一些需要过滤的url
+        //TODO: 增加一些需要过滤的url
         filterChainDefinitionMap.put("/mind-mark/auth/user/register", "anon,captchaValidateFilter");
         filterChainDefinitionMap.put("/mind-mark/auth/shiro/login", "anon,captchaValidateFilter");
         filterChainDefinitionMap.put("/**", "anon");
@@ -161,6 +162,7 @@ public class ShiroConfig {
 
         defaultWebSessionMgr.setSessionDAO(sessionDAO());
         defaultWebSessionMgr.setSessionFactory(sessionFactory());
+
         return defaultWebSessionMgr;
     }
 
@@ -178,7 +180,10 @@ public class ShiroConfig {
         //认证信息默认操作 "authenticationCache" ，授权信息默认操作 "authorizationCache" 。
         //认证、授权、Session，全部使用同一个 EhCache 运行时对象。
         securityManager.setCacheManager(ehCacheManager());
-        
+
+        //TODO: 这里似乎存在问题，既然交给 Spring 管理，这里应该不需要手动设置，初步怀疑 shiro 与 spring-boot 之间存在版本兼容问题
+        SecurityUtils.setSecurityManager(securityManager);
+
         return securityManager;
     }
 

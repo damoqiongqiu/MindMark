@@ -1,4 +1,4 @@
-package com.mmk.core.utils;
+package com.mmk.rbac.util;
 
 import java.util.HashMap;
 

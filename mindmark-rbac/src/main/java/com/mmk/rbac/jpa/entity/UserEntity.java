@@ -13,7 +13,7 @@ import java.util.List;
 @Entity(name = "RbacUserEntity")
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "mindmark_rbac_user")
+@Table(name = "mind_mark_rbac_user")
 public class UserEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -62,7 +62,7 @@ public class UserEntity implements Serializable {
     private String remark;
 
     @JoinTable(
-        name="mindmark_rbac_user_role",
+        name="mind_mark_rbac_user_role",
         joinColumns={@JoinColumn(name="user_id",referencedColumnName="user_id")},
         inverseJoinColumns={@JoinColumn(name="role_id",referencedColumnName="role_id")}
     )

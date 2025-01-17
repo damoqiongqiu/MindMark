@@ -1,4 +1,4 @@
-package com.mmk.core.i18n;
+package com.mmk.rbac.i18n;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class I18nUtil {
         return i18nUtil.i18nService.getMessage(code, args);
     }
     public static String getMessage(String code) {
-       return i18nUtil.i18nService.getMessage(code);
+        return i18nUtil.i18nService.getMessage(code);
     }
 
 }

@@ -21,5 +21,4 @@ public class MindmarkApplication {
     public static void main(String[] args) {
         SpringApplication.run(MindmarkApplication.class, args);
     }
-
 }

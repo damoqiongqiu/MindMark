@@ -16,7 +16,7 @@ import java.util.List;
  * - 前端权限是指在前端页面上的权限控制，比如菜单、按钮、甚至可以细致到一个 HTML 元素。
  * - 后端权限是指在后端 API 接口上的权限控制，比如一个 API 接口是否需要登录才能访问，是否需要某个角色才能访问，是否需要某个权限才能访问等。
  * 
- * ApiPermissionEntity 用来定义服务端 API 接口的权限，对应数据库中的 mindmark_rbac_api 表。
+ * ApiPermissionEntity 用来定义服务端 API 接口的权限，对应数据库中的 mind_mark_rbac_api 表。
  * 需要被保护的服务端 API 接口使用此 Entity 进行权限定义，不需要保护的接口由业务代码自行处理。
  * 
  * @see ComponentPermissionEntity
@@ -25,7 +25,7 @@ import java.util.List;
 @Entity
 @DynamicInsert
 @DynamicUpdate
-@Table(name = "mindmark_rbac_api")
+@Table(name = "mind_mark_rbac_api")
 public class ApiPermissionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,7 +55,7 @@ public class ApiPermissionEntity implements Serializable {
     private String remark;
 
     @JoinTable(
-        name="mindmark_rbac_role_api",
+        name="mind_mark_rbac_role_api",
         joinColumns={@JoinColumn(name="api_id",referencedColumnName="api_id")},
         inverseJoinColumns={@JoinColumn(name="role_id",referencedColumnName="role_id")}
     )

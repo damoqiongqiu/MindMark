@@ -1,6 +1,6 @@
 package com.mmk.rbac.config;
 
-import com.mmk.core.i18n.I18nService;
+import com.mmk.rbac.i18n.I18nService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;

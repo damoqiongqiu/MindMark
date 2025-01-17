@@ -1,4 +1,4 @@
-package com.mmk.core.exception;
+package com.mmk.rbac.exception;
 
 /**
  * MindMark 的基础异常类，所有业务异常都应该继承此类。

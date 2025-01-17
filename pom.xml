@@ -63,11 +63,9 @@
 
     <!-- Modules -->
     <modules>
-        <!--  mindmark-app:启动类所在模块      -->
         <module>mindmark-app</module>
         <module>mindmark-etl</module>
         <module>mindmark-llm-connector</module>
-        <module>mindmark-core</module>
         <module>mindmark-rbac</module>
     </modules>
 
@@ -123,6 +121,7 @@
                 <version>${spring-ai.version}</version>
                 <type>pom</type>
             </dependency>
+
             <!-- OpenAI -->
             <dependency>
                 <groupId>org.springframework.ai</groupId>
@@ -173,7 +172,7 @@
                 <version>${spring-ai.version}</version>
             </dependency>
 
-            <!--            shiro-->
+            <!-- shiro -->
             <dependency>
                 <groupId>org.apache.shiro</groupId>
                 <artifactId>shiro-spring</artifactId>
@@ -197,22 +196,11 @@
                 <artifactId>shiro-ehcache</artifactId>
                 <version>${shiro.version}</version>
             </dependency>
-            <!--
-           用来监控 ehcache ，生产环境需要删掉
-           监控工具看起来有点老，需要一款新的工具来替代
-           https://www.ehcache.org/documentation/2.7/operations/monitor.html
-       -->
-            <dependency>
-                <groupId>org.terracotta</groupId>
-                <artifactId>ehcache-probe</artifactId>
-                <version>${ehcacheProbe.version}</version>
-            </dependency>
             <dependency>
                 <groupId>com.github.penggle</groupId>
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>

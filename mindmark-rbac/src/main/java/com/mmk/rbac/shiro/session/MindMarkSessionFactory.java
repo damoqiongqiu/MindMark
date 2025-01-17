@@ -1,6 +1,6 @@
 package com.mmk.rbac.shiro.session;
 
-import com.mmk.core.utils.IPUtil;
+import com.mmk.rbac.util.IPUtil;
 import eu.bitwalker.useragentutils.UserAgent;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.SessionContext;

@@ -1,7 +1,5 @@
 package com.mmk.rbac.exception;
 
-import com.mmk.core.exception.MindMarkBaseException;
-
 /**
  * 用户不存在异常类
  *

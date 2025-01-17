@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 扩展 Shiro 内置的 EnterpriseCacheSessionDAO ，操作 MySQL 中的 mindmark_rbac_session 表。
+ * 扩展 Shiro 内置的 EnterpriseCacheSessionDAO ，操作 MySQL 中的 mind_mark_rbac_session 表。
  *
  * 由于 EnterpriseCacheSessionDAO 实现了 CacheManagerAware 接口， Shiro 的 SecurityManager 会自动把
  * CacheManager 缓存实例注入到此类中，所以此类中可以直接操作 cacheManager 缓存实例。

@@ -1,6 +1,6 @@
 package com.mmk.rbac.controller;
 
-import com.mmk.core.utils.AjaxResult;
+import com.mmk.rbac.util.AjaxResult;
 import com.mmk.rbac.jpa.entity.ComponentPermissionEntity;
 import com.mmk.rbac.jpa.entity.RoleEntity;
 import com.mmk.rbac.service.IComponentPermissionService;

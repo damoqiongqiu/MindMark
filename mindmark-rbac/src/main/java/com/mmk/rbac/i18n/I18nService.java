@@ -1,4 +1,4 @@
-package com.mmk.core.i18n;
+package com.mmk.rbac.i18n;
 
 import org.springframework.context.MessageSource;
 
