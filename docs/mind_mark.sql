@@ -259,7 +259,7 @@ values
     'mind-mark',            -- 用户名
     'mind-mark',            -- 昵称
     '596f1b3bcf2240e649b295afccd0f70',            -- 密码（密文密码）
-    '',                     -- salt（默认为空）
+    'mind-mark',                     -- salt（默认为空）
     '',                     -- email（默认为空）
     '',                     -- cellphone（默认为空）
     2,                      -- 性别（默认为未知，值为 2）
