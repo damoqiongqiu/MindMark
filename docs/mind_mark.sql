@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2025/1/17 14:16:18                           */
+/* Created on:     2025/1/17 20:38:48                           */
 /*==============================================================*/
 
 
@@ -140,6 +140,14 @@ alter table mind_mark_rbac_component comment '用来定义前端页面上的组�
 component 可以是菜单、按钮，甚至可以细致到一个 HTML 元素。
 ';
 
+insert into mind_mark_rbac_component (component_id, p_id, component_name, icon, url, display_order, permission, create_time, update_time, visiable, remark)
+values 
+(42, null, '用户管理', null, 'user-table/page/1', 1, 'menu:view:user-management', '2023-07-19 14:13:59', '2023-07-19 15:10:57', 1, '拥有此权限代码的角色可以看到管理后台右侧边栏的【用户管理】菜单项。删除此项将会导致菜单入口消失。'),
+(43, null, '角色管理', null, 'role-table/page/1', 2, 'menu:view:role-management', '2023-07-19 14:14:18', '2023-07-19 14:31:58', 1, '拥有此权限代码的角色可以看到管理后台右侧边栏的【角色管理】菜单项。'),
+(44, null, '后端接口权限', null, 'api-permission-table/page/1', 3, 'menu:view:api-permission-management', '2023-07-19 14:14:54', '2023-07-19 14:32:12', 1, '拥有此权限代码的角色可以看到管理后台右侧边栏的【后端接口权限】菜单项。'),
+(45, null, '前端页面权限', null, 'component-permission-table/page/1', 4, 'menu:view:component-permission-management', '2023-07-19 14:15:18', '2023-07-19 14:32:26', 1, '拥有此权限代码的角色可以看到管理后台右侧边栏的【前端页面权限】菜单项。'),
+(46, null, '系统设置', null, 'sys-settings', 5, 'menu:view:sys-settings', '2023-07-19 14:15:48', '2023-07-19 14:32:38', 1, '拥有此权限代码的角色可以看到管理后台右侧边栏的【系统设置】菜单项。');
+
 /*==============================================================*/
 /* Table: mind_mark_rbac_role                                   */
 /*==============================================================*/
@@ -153,7 +161,9 @@ create table mind_mark_rbac_role
 );
 
 insert into mind_mark_rbac_role (role_name, status, remark)
-values ('系统管理员', -1, '【系统管理员角色拥有系统最高权限，删除或者禁用此角色将会导致管理员无法登录系统。】');
+values 
+('系统管理员', -1, '【系统管理员角色拥有系统最高权限，删除或者禁用此角色将会导致管理员无法登录系统。】'),
+('普通用户', 0, '普通用户');
 
 /*==============================================================*/
 /* Table: mind_mark_rbac_role_api                               */
@@ -187,6 +197,14 @@ create table mind_mark_rbac_role_component
 );
 
 alter table mind_mark_rbac_role_component comment '角色与菜单的关联关系';
+
+insert into mind_mark_rbac_role_component (role_id, component_id)
+values 
+(1, 42),
+(1, 43),
+(1, 44),
+(1, 45),
+(1, 46);
 
 /*==============================================================*/
 /* Table: mind_mark_rbac_session                                */
@@ -236,7 +254,7 @@ create table mind_mark_rbac_user
    primary key (user_id)
 );
 
-alter table mind_mark_rbac_user comment '对于 MindMark 来说，总是会自动创建一个默认的用户叫做 mind-mark ，密码也是 mind-mark';
+alter table mind_mark_rbac_user comment '对于 MindMark 来说，总是会自动创建一个默认的用户叫做 mind-mark@qq.com ，密码是 mind-m';
 
 insert into mind_mark_rbac_user
 (
@@ -256,11 +274,11 @@ insert into mind_mark_rbac_user
 )
 values
 (
-    'mind-mark',            -- 用户名
+    'mind-mark@qq.com',            -- 用户名
     'mind-mark',            -- 昵称
-    '596f1b3bcf2240e649b295afccd0f70', -- 密码（密文密码）
-    'mind-mark',                     -- salt
-    '',                     -- email（默认为空）
+    '179745ed5f926b4f3d2be53d2ef79a88', -- 密码（密文密码）
+    '7J8k9L0m1N2p3Q4r',                 -- salt
+    'mind-mark@qq.com',                 -- email（默认为空）
     '',                     -- cellphone（默认为空）
     2,                      -- 性别（默认为未知，值为 2）
     '',                     -- city（默认为空）
@@ -282,7 +300,7 @@ create table mind_mark_rbac_user_role
 );
 
 insert into mind_mark_rbac_user_role (user_id, role_id)
-values (1, 1);
+values (1, 2);
 
 /*==============================================================*/
 /* Table: mind_mark_table_for_process                           */
@@ -316,6 +334,6 @@ alter table mind_mark_user_index comment '维护用户在 ElasticSearch 中创�
 
 insert into mind_mark_user_index(id, user_id, index_name, remark)
 values
-(1, (select user_id from mind_mark_rbac_user where user_name = 'mind-mark'), 'mind-mark','MindMark 默认索引');
+(1, (select user_id from mind_mark_rbac_user where user_name = 'mind-mark@qq.com'), 'mind-mark','MindMark 默认索引');
 
 

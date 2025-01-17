@@ -6,6 +6,8 @@ import com.mmk.etl.jpa.entity.FileUploadEntity;
 import com.mmk.etl.jpa.repository.IEmbeddingLogRepository;
 import com.mmk.etl.jpa.repository.IFileUploadRepository;
 import com.mmk.etl.utils.HashUtils;
+import com.mmk.rbac.jpa.entity.UserEntity;
+import com.mmk.rbac.shiro.util.MindMarkSecurityUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -37,6 +39,11 @@ public class FileBzService {
      */
     public List<FileUploadEntity> upload(MultipartFile[] files) {
         try {
+            UserEntity userEntity = MindMarkSecurityUtils.getUserEntity();
+            if (userEntity == null) {
+                throw new IllegalArgumentException("用户未登录");
+            }
+            
             String uploadPath=etlConfig.getWatchFile().getFilePath();
 
             //确保目录存在
@@ -68,7 +75,7 @@ public class FileBzService {
                 fileEntity.setPath(targetFile.getPath());
                 fileEntity.setFileSize(file.getSize());
                 fileEntity.setFileSuffix(suffix);
-                fileEntity.setUserId(1);//TODO: FIXME 取用户 ID
+                fileEntity.setUserId(userEntity.getUserId());
                 fileEntity = this.fileUploadRepository.save(fileEntity);
 
                 resultList.add(fileEntity);

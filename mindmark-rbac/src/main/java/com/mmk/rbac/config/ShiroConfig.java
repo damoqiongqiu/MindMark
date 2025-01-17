@@ -83,7 +83,6 @@ public class ShiroConfig {
 
         //所有静态资源交给Nginx管理，这里只配置与 shiro 相关的过滤器。
         LinkedHashMap<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-        //TODO: 增加一些需要过滤的url
         filterChainDefinitionMap.put("/mind-mark/auth/user/register", "anon,captchaValidateFilter");
         filterChainDefinitionMap.put("/mind-mark/auth/shiro/login", "anon,captchaValidateFilter");
         filterChainDefinitionMap.put("/**", "anon");

@@ -13,11 +13,12 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 | OpenJDK 20 | JDK >=18 | 小于 18 的版本可能存在兼容性问题，未测试。 |
 | SpringAI | 1.0.0-SNAPSHOT | [https://docs.spring.io/spring-ai/reference/index.html](https://docs.spring.io/spring-ai/reference/index.html) |
 | ElasticSearch | 8.17.0 | [https://www.elastic.co/elasticsearch](https://www.elastic.co/elasticsearch) |
+| Apache Shiro | 1.12.0 | [https://shiro.apache.org/](https://shiro.apache.org/) |
 | MariaDB | >=10.0 | [https://mariadb.org/](https://mariadb.org/) |
 
 ## 2.准备工作
 
-### 2.1 选择一个大模型
+### 2.1 创建大模型账号
 
 MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 
@@ -25,7 +26,7 @@ MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 | --- | --- |
 | Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key |
 | 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) |
-| Ollama | Ollama本地大模型，本项目实现的是llama3.2，可以根据需求自行替换，[https://ollama.com/](https://ollama.com/)  |
+| Ollama | Ollama 本地大模型，本项目实现的是 llama3.2，可以根据需求自行替换，[https://ollama.com/](https://ollama.com/) |
 
 **把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
 
@@ -85,17 +86,18 @@ docker logs -f kibana
 
 省略 MariaDB 安装配置过程， MySQL 也可以。
 
-在你的 MariaDB 中创建一个数据库，名称为 mind-mark ，然后把此项目下的 /docs/mind_mark.sql 导入进去，这些是 MindMark 自己使用的表。
-
-检查一下初始数据， mind_mark_rbac_user 和 mind_mark_user_index 这两张表中应该分别有一行初始数据。
+在你的 MariaDB 中创建一个数据库，名称为 mind-mark ，创建时请选择 utf8mb4 作为字符集，避免产生非英文字符的乱码。创建完整之后，然后把此项目下的 /docs/mind_mark.sql 建表脚本导入进去，这些是 MindMark 自己使用的表。
 
 PDM 模型如下：
 
 ![PDM Model](./docs/imgs/pdm.png)
 
-### 2.4 Ollama 的安装运行
+pdm 模型文件在 /docs/mind_mark.pdm 中，可以使用 PowerDesigner 查看和编辑。
 
-根据[官网下载](https://ollama.com/download)安装对应操作系统的 ollama ，并运行对应模型，以本项目使用的 llama3.2 为例
+### 2.4 Ollama 的安装配置
+
+根据[官网](https://ollama.com/download)上的提示下载安装对应操作系统的 ollama ，并运行对应模型，以本项目已经测试 llama3.2
+
 ```bash
 ollama run llama3.2:latest
 ```
@@ -106,7 +108,7 @@ ollama run llama3.2:latest
 - 修改配置文件（application.yml 和 application-druid.yml 中有一些配置项需要改成你自己的配置）
 - 启动 MindMarkApplication.java
 
-**备注：在启动和运行时，如果看到异常信息可以无视，只要能够正常访问即可。**
+**备注：在启动时，有一些异常信息可以无视，只要能够正常访问即可。**
 
 ## 4.测试效果
 
@@ -127,6 +129,8 @@ MindMark 能够监控两种类型的数据：
 
 你可以通过 MindMark 的文件上传接口上传一些文件， MindMark 会把这些文件全部向量化，并存储到 ElasticSearch 中。目前支持的文件格式有：pdf/txt/markdown/doc/docx/ppt/pptx/xls/xlsx/json 。
 
+**请注意：某些大模型接口是按照 Token 数量收费的，所以请不要上传太大的文件，否则会产生高额的费用。**
+
 ### 4.2 测试接口
 
 MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-react
@@ -145,8 +149,7 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 
 ![11.png](./docs/imgs/11.png)
 
-![12.png](./docs/imgs/12.png)
-![13.png](./docs/imgs/13.png)
+![12.png](./docs/imgs/12.png) ![13.png](./docs/imgs/13.png)
 
 ## 5.系统架构
 
@@ -154,7 +157,9 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 
 ## 6.参考资源
 
-SpringAI 官方文档：https://docs.spring.io/spring-ai/reference/index.html
+- SpringAI 官方文档：https://docs.spring.io/spring-ai/reference/index.html
+- Gitee AI 官方文档： https://ai.gitee.com/
+- 智谱大模型官方文档： https://open.bigmodel.cn/
 
 ## 7.License
 

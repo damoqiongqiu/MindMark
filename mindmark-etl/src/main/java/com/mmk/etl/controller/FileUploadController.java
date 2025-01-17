@@ -17,7 +17,7 @@ import java.util.Map;
 
 /**
  * 文件上传相关操作的控制器
- * 
+ * TODO: 加上 Shiro 权限注解，用户需要登录之后才能上传文件。
  * @author 大漠穷秋
  */
 @RestController

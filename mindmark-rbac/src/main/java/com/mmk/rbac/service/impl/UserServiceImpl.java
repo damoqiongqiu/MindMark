@@ -263,8 +263,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean matches(UserEntity userEntity, String newPassword) {
-        return userEntity.getPassword().equals(encryptPassword(userEntity.getUserName(), newPassword, userEntity.getSalt()));
+    public boolean matches(UserEntity userEntity, String password) {
+        return userEntity.getPassword().equals(encryptPassword(userEntity.getUserName(), password, userEntity.getSalt()));
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.mmk.etl.timer;
 
 import com.mmk.etl.EtlConfig;
-import com.mmk.etl.jpa.entity.*;
+import com.mmk.etl.jpa.entity.DbEntity;
+import com.mmk.etl.jpa.entity.EmbeddingLogEntity;
+import com.mmk.etl.jpa.entity.TableEntity;
 import com.mmk.etl.jpa.service.DataBaseBzService;
 import com.mmk.etl.service.MySQLEtlService;
+import com.mmk.rbac.jpa.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;

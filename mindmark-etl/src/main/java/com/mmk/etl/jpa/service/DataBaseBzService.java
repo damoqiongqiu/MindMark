@@ -1,7 +1,13 @@
 package com.mmk.etl.jpa.service;
 
-import com.mmk.etl.jpa.entity.*;
-import com.mmk.etl.jpa.repository.*;
+import com.mmk.etl.jpa.entity.DbEntity;
+import com.mmk.etl.jpa.entity.EmbeddingLogEntity;
+import com.mmk.etl.jpa.entity.TableEntity;
+import com.mmk.etl.jpa.repository.IDbRepository;
+import com.mmk.etl.jpa.repository.IEmbeddingLogRepository;
+import com.mmk.etl.jpa.repository.ITableRepository;
+import com.mmk.rbac.jpa.entity.UserEntity;
+import com.mmk.rbac.jpa.repository.IUserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
