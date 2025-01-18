@@ -41,7 +41,6 @@ public class ShiroAuthController {
     @PostMapping("/register")
     @ResponseBody
     public AjaxResult register(@RequestBody UserEntity userEntity) {
-        //TODO:与前端代码对接，让前端先加密一次传输过来
         userEntity.setSalt(MindMarkSecurityUtils.randomSalt());
         userEntity.setPassword(userService.encryptPassword(userEntity.getUserName(), userEntity.getPassword(), userEntity.getSalt()));
 
@@ -64,7 +63,6 @@ public class ShiroAuthController {
     /**
      * 调用 Shiro 的 API 尝试登录，Shiro 会在内部调用 NiceFishMySQLRealm.doGetAuthenticationInfo 进行验证。
      * 关键调用轨迹：ShiroAuthController.login->NiceFishMySQLRealm.doGetAuthenticationInfo->UserServiceImpl.checkUser
-     * TODO:要求前端代码对 password 先进行一次加密再调用此接口登录。
      * @param userName   用户名
      * @param password   密码
      * @param rememberMe 记住我

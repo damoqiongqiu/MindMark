@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2025/1/18 10:57:29                           */
+/* Created on:     2025/1/18 20:35:57                           */
 /*==============================================================*/
 
 
@@ -249,7 +249,7 @@ create table mind_mark_rbac_user
    education            varchar(128),
    avatar_url           varchar(64) default '' comment '用户头像 URL',
    create_time          datetime default current_timestamp,
-   status               int(11) default 1 comment '-1 特权用户不能删除 0正常 1禁用 2删除',
+   status               int(11) default 0 comment '-1 特权用户不能删除 0正常 1禁用 2删除',
    remark               varchar(1024) default '',
    primary key (user_id)
 );
@@ -276,7 +276,7 @@ values
 (
     'mind-mark@qq.com',            -- 用户名
     'mind-mark',            -- 昵称
-    '179745ed5f926b4f3d2be53d2ef79a88', -- 密码（密文密码）
+    'b2718557d91084a60c9a8b02676cc765', -- 密码（密文密码）
     '7J8k9L0m1N2p3Q4r',                 -- salt
     'mind-mark@qq.com',                 -- email（默认为空）
     '',                     -- cellphone（默认为空）
