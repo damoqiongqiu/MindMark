@@ -42,7 +42,6 @@ public class UserController {
     public AjaxResult updateUser(@RequestBody UserEntity userEntity) {
         logger.debug(userEntity.toString());
 
-        //TODO:与前端代码对接，让前端先加密一次传输过来
         userEntity.setSalt(MindMarkSecurityUtils.randomSalt());
         userEntity.setPassword(userService.encryptPassword(userEntity.getUserName(), userEntity.getPassword(), userEntity.getSalt()));
 
