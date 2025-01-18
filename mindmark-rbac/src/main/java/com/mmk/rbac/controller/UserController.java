@@ -1,10 +1,11 @@
 package com.mmk.rbac.controller;
 
 import com.mmk.rbac.i18n.I18nUtil;
-import com.mmk.rbac.util.AjaxResult;
 import com.mmk.rbac.jpa.entity.UserEntity;
 import com.mmk.rbac.service.IUserService;
 import com.mmk.rbac.shiro.util.MindMarkSecurityUtils;
+import com.mmk.rbac.util.AjaxResult;
+import com.mmk.rbac.validation.ValidUser;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +40,12 @@ public class UserController {
 
     @PostMapping("/update")
     @ResponseBody
-    public AjaxResult updateUser(@RequestBody UserEntity userEntity) {
+    public AjaxResult updateUser(@ValidUser @RequestBody UserEntity userEntity) {
         logger.debug(userEntity.toString());
-
+        
         userEntity.setSalt(MindMarkSecurityUtils.randomSalt());
         userEntity.setPassword(userService.encryptPassword(userEntity.getUserName(), userEntity.getPassword(), userEntity.getSalt()));
 
-        //TODO:数据合法性校验
         return AjaxResult.success(userService.saveUser(userEntity));
     }
 
