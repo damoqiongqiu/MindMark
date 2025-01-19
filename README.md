@@ -170,6 +170,7 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 - SpringAI 官方文档：https://docs.spring.io/spring-ai/reference/index.html
 - Gitee AI 官方文档： https://ai.gitee.com/
 - 智谱大模型官方文档： https://open.bigmodel.cn/
+- Apach Shiro 权限控制详细解释： https://my.oschina.net/mumu
 
 ## 8.License
 
