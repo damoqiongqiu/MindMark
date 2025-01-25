@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <logger name="com.ace" level="DEBUG"/>
+    <logger name="com.alibaba.druid.pool.DruidDataSource" level="DEBUG"/>
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread]-%-5level-%logger{50}-%line - %msg %n"/>
+    <property name="pattern-color" value="%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %green(%logger{50}) %red(%line)- %highlight(%msg) %n"/>
+    <property name="LOG_FILE" value="${LOG_FILE:-ace-mind-mark.log}"/>
+    <property name="LOG_PATH" value="${LOG_PATH:-./logs/}"/>
+    <property name="APPNAME"  value="ace-mind-mark"/>
+    <springProfile name="local,dev">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%date{yyyy-MM-dd HH:mm:ss.SSS}  %-5level %logger{36} - %msg%n</pattern>
+                <charset>UTF-8</charset>
+            </encoder>
+        </appender>
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+        <logger name="org.springframework.amqp.rabbit.listener.BlockingQueueConsumer" level="DEBUG" />
+        <logger name="org.springframework.core.task.SimpleAsyncTaskExecutor" level="DEBUG" />
+        <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="DEBUG" />
+    </springProfile>
+
+    <springProfile name="test,dev">
+        <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>${pattern-color}</pattern>
+            </encoder>
+        </appender>
+        <appender name="file" class="ch.qos.logback.core.FileAppender">
+            <file>${LOG_PATH}/${APPNAME}-console.log</file>
+            　　　　　　　<append>true</append>
+            　　　　　　　<encoder>
+            　　　　　　　　　<pattern>${pattern-color}</pattern>
+            　　　　　　　</encoder>
+        </appender>
+
+        <appender name="baseLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+            <file>${LOG_PATH}/${LOG_FILE}</file>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/${APPNAME}-app-%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>100MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>5</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${pattern-color}</pattern>
+            </encoder>
+        </appender>
+        <appender name="errorlogFile" class="ch.qos.logback.core.rolling.RollingFileAppender" >
+            <file>${LOG_PATH}/${APPNAME}-error.log</file>
+            <filter class="ch.qos.logback.classic.filter.ThresholdFilter" >
+                <level>ERROR</level>
+            </filter>
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <fileNamePattern>${LOG_PATH}/errorlog-${APPNAME}-%d{yyyy-MM-dd}_%i.log.zip</fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>5</maxHistory>
+            </rollingPolicy>
+            <encoder>
+                <pattern>${pattern-color}</pattern>
+            </encoder>
+        </appender>
+        <root level="debug">
+            <appender-ref ref="console" />
+            <appender-ref ref="file" />
+            <appender-ref ref="baseLogFile" />
+            <appender-ref ref="errorlogFile" />
+        </root>
+        <logger name="org.springframework.core.task.SimpleAsyncTaskExecutor" level="DEBUG" />
+        <logger name="org.apache.http.impl.conn.PoolingHttpClientConnectionManager" level="DEBUG" />
+    </springProfile>
+</configuration>
