@@ -64,7 +64,7 @@ docker pull docker.elastic.co/elasticsearch/elasticsearch:8.17.0
   -e "ES_JAVA_OPTS=-Xms8g -Xmx8g" \
   -p 9200:9200 \
   -p 9300:9300 \
-  docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+  docker.elastic.co/elasticsearch/elasticsearch:8.13.4
 ```
 
 **请注意：以上启动方式禁用了 SSL ，这是为了本地开发方便，对于生产系统，请启用 SSL 。**
