@@ -41,6 +41,7 @@ MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 | Ollama | Ollama 本地大模型，本项目实现的是 llama3.2，可以根据需求自行替换，[https://ollama.com/](https://ollama.com/) |
 
 **把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
+**智谱大模型 Embedding 时需要消耗部分账户余额（消耗较少），请按少量充值到余额，请注意是余额。否则会报欠费**
 
 ### 3.2 ElasticSearch 安装配置
 
@@ -108,9 +109,11 @@ pdm 模型文件在 /docs/mind_mark.pdm 中，可以使用 PowerDesigner 查看�
 
 ### 3.4 Ollama 的安装配置
 
-根据[官网](https://ollama.com/download)上的提示下载安装对应操作系统的 ollama ，并运行对应模型，以本项目已经测试 llama3.2
+根据[官网](https://ollama.com/download)上的提示下载安装对应操作系统的 ollama ，并运行对应模型，以本项目已经测试 deepseek-r1 和 llama3.2，您也可以根据自己需求自由替换成其他底层模型，请注意服务器配置高低，选择大小合适的模型。
 
 ```bash
+ollama run deepseek-r1:latest
+或
 ollama run llama3.2:latest
 ```
 
@@ -161,7 +164,14 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 
 ![11.png](./docs/imgs/11.png)
 
-![12.png](./docs/imgs/12.png) ![13.png](./docs/imgs/13.png)
+![12.png](./docs/imgs/12.png)
+llama 模型：
+![13.png](./docs/imgs/13.png)
+
+deepseek 模型：
+![test-3-ollama-deepseek.png](./docs/imgs/test-3-ollama-deepseek.png)
+
+**最后两个截图示例中无论是 deepseek-r1 还是 llama:3.2 模型，在页面上都是用的 ollama 这个下拉框选项，使用者自行在 ollama 平台切换不同模型。**
 
 ## 6.系统架构
 
