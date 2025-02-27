@@ -34,11 +34,11 @@ SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请�
 
 MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 
-| 模型 | 说明 |
-| --- | --- |
-| Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key |
-| 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/) |
-| Ollama | Ollama 本地大模型，本项目实现的是 llama3.2，可以根据需求自行替换，[https://ollama.com/](https://ollama.com/) |
+| 模型 | 说明                                                                                       |
+| --- |------------------------------------------------------------------------------------------|
+| Gitee 大模型 | 前往 https://ai.gitee.com/ 注册并获得一个 api-key                                                 |
+| 智谱大模型 | 在智谱大模型注册并完成实名认证，然后获得一个 api-key ，[https://open.bigmodel.cn/](https://open.bigmodel.cn/)   |
+| Ollama | Ollama 本地大模型，本项目默认实现的是deepseek-r1 ，可以根据需求自行替换，[https://ollama.com/](https://ollama.com/) |
 
 **把获得的 api-key 配置到 mindmark-llm-connector/src/main/resources/application.yml 中，SpringAI 支持同时配置多个模型。**
 **智谱大模型 Embedding 时需要消耗部分账户余额（消耗较少），请按少量充值到余额，请注意是余额。否则会报欠费**
