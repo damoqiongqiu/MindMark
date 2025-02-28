@@ -14,6 +14,9 @@
 
 <p>线上演示地址：<a href="https://mindmark.qhdsx.com/">https://mindmark.qhdsx.com/</a></p>
 
+
+<p>前端代码地址：<a href="https://gitee.com/mumu-osc/mind-mark-react.git">https://gitee.com/mumu-osc/mind-mark-react.git</a></p>
+
 ## 1.注意
 
 SpringAI 项目整体上处于预览阶段，并没有正式发布版本，请勿把本项目的代码用于实际业务系统。
