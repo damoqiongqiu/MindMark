@@ -49,7 +49,7 @@ MindMark 已经测试了 Gitee 和 Zhipu 的大模型。
 
 ```bash
 
-docker pull docker.elastic.co/elasticsearch/elasticsearch:8.17.0
+docker pull docker.elastic.co/elasticsearch/elasticsearch:8.13.4
 
 ```
 
