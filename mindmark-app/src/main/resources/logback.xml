@@ -75,7 +75,7 @@
     </appender>
 
     <!-- 默认日志输出级别， level="INFO" 可设置值： INFO, DEBUG,ERROR-->
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="DEBUG_FILE" />
         <appender-ref ref="INFO_FILE" />
