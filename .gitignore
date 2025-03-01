@@ -1,6 +1,7 @@
 ######################################################################
 # Build Tools
-
+logs/
+mindmark-app/src/main/.DS_Store
 .gradle
 /build/
 !gradle/wrapper/gradle-wrapper.jar
