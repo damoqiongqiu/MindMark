@@ -165,13 +165,18 @@ MindMark 对应的前端项目位于： https://gitee.com/mumu-osc/mind-mark-rea
 
 切换不同的模型：
 
+gitee-ai 大模型的模力方舟：
+![11.png](./docs/imgs/test-4-giteeLLM.png)
+OpenAI：
 ![11.png](./docs/imgs/11.png)
+**请注意本项目暂未展示该选项，但是已经实现OpenAI模型的接入,只需修改application.yml中配置即可**
 
+智谱大模型
 ![12.png](./docs/imgs/12.png)
-llama 模型：
+llama 大模型：
 ![13.png](./docs/imgs/13.png)
 
-deepseek 模型：
+deepseek 大模型：
 ![test-3-ollama-deepseek.png](./docs/imgs/test-3-ollama-deepseek.png)
 
 **最后两个截图示例中无论是 deepseek-r1 还是 llama:3.2 模型，在页面上都是用的 ollama 这个下拉框选项，使用者自行在 ollama 平台切换不同模型。**
