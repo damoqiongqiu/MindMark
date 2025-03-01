@@ -65,9 +65,10 @@ spring:
       max-request-size: 5MB
 
 logging:
+  config: classpath:logback.xml
   level:
-    root: DEBUG
-    com.mindmark: DEBUG
+    #    root: DEBUG  #托管到 logback
+    #    com.mindmark: DEBUG  #托管到 logback
     org.springframework: DEBUG
     org.hibernate: DEBUG
     org.hibernate.SQL: DEBUG
