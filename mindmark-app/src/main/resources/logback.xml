@@ -19,7 +19,7 @@
             <!-- 每日生成日志文件或日志文件大小超出限制后输出的文件名模板 -->
             <fileNamePattern>${LOG_PATH}/debug-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- 日志文件保留天数 -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>10</maxHistory>
             <!-- 日志文件最大大小：100MB -->
             <maxFileSize>100MB</maxFileSize>
         </rollingPolicy>
@@ -28,7 +28,7 @@
         </encoder>
     </appender>
 
-    <!-- info级别日志文件输出 -->
+    <!-- info 级别日志文件输出 -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志文件输出的文件名 -->
         <File>${LOG_PATH}/info.log</File>
@@ -45,7 +45,7 @@
         </encoder>
     </appender>
 
-    <!-- error级别日志文件输出 -->
+    <!-- error 级别日志文件输出 -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 日志输出级别，优先级 > '<root level>' -->
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
@@ -62,6 +62,7 @@
         </encoder>
     </appender>
 
+<!--    这里做了冗余配置：将INFO日志全部记录到文件中，不受 maxHistory，maxFileSize限制，请结合自身需求选择是否启用-->
     <appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HISTORY_PATH}/project-id-execution-detail-info.log</file>
         <encoder>
