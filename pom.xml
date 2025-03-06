@@ -158,6 +158,11 @@
                 <artifactId>spring-ai-pdf-document-reader</artifactId>
                 <version>${spring-ai.version}</version>
             </dependency>
+            <dependency>
+                <groupId>co.elastic.clients</groupId>
+                <artifactId>elasticsearch-java</artifactId>
+                <version>8.17.0</version>
+            </dependency>
             <!-- NLP Dependencies -->
             <dependency>
                 <groupId>com.hankcs</groupId>
