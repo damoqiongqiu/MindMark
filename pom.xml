@@ -59,6 +59,8 @@
         <shiro.version>1.12.0</shiro.version>
         <userAgentUtils.version>1.19</userAgentUtils.version>
         <ehcacheProbe.version>1.0.2</ehcacheProbe.version>
+<!--        这里暂时使用 8.17.0 版本（因为本项目使用的演示环境安装es 8.13.3有问题。如果您安装没有问题，请最好根据源码要求选择依赖版本和es版本，实际按源码的话应该是 8.13.3）-->
+        <elastic-java-clients.version>8.17.0</elastic-java-clients.version>
     </properties>
 
     <!-- Modules -->
@@ -161,7 +163,7 @@
             <dependency>
                 <groupId>co.elastic.clients</groupId>
                 <artifactId>elasticsearch-java</artifactId>
-                <version>8.17.0</version>
+                <version>${elastic-java-clients.version}</version>
             </dependency>
             <!-- NLP Dependencies -->
             <dependency>
