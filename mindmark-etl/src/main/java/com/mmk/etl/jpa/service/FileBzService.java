@@ -40,10 +40,7 @@ public class FileBzService {
     public List<FileUploadEntity> upload(MultipartFile[] files) {
         try {
             UserEntity userEntity = MindMarkSecurityUtils.getUserEntity();
-            if (userEntity == null) {
-                throw new IllegalArgumentException("用户未登录");
-            }
-            
+
             String uploadPath=etlConfig.getWatchFile().getFilePath();
 
             //确保目录存在

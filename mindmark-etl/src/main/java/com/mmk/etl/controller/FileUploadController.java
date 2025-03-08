@@ -4,6 +4,7 @@ import com.mmk.etl.jpa.entity.FileUploadEntity;
 import com.mmk.etl.jpa.service.FileBzService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,7 @@ public class FileUploadController {
      * @return 包含文件上传记录的分页对象
      */
     @GetMapping("/list/{page}")
+    @RequiresAuthentication // 需要登录
     public Page<FileUploadEntity> getAllFilesPageable(@PathVariable Integer page) {
         return fileBzService.getAllFilePageable(page, pageSize);
     }
@@ -53,6 +55,7 @@ public class FileUploadController {
      * @return 删除结果
      */
     @DeleteMapping("/delete/{id}")
+    @RequiresAuthentication // 需要登录
     public ResponseEntity<String> deleteFileById(@PathVariable Integer id) {
         try {
             fileBzService.deleteFileById(id);
@@ -71,6 +74,7 @@ public class FileUploadController {
      * @return 上传结果详情
      */
     @PostMapping("/upload")
+    @RequiresAuthentication // 需要登录
     public ResponseEntity<Map<String, Object>> uploadFiles(MultipartFile[] files) {
         Map<String, Object> response = new HashMap<>();
 

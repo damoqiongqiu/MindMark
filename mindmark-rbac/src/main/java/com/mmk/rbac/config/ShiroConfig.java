@@ -9,6 +9,8 @@ import org.apache.shiro.codec.Base64;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
+import org.apache.shiro.spring.web.config.ShiroFilterChainDefinition;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -216,4 +218,17 @@ public class ShiroConfig {
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
     }
+
+    @Bean
+    public ShiroFilterChainDefinition shiroFilterChainDefinition() {
+        DefaultShiroFilterChainDefinition chainDefinition = new DefaultShiroFilterChainDefinition();
+
+        // 配置拦截规则
+        chainDefinition.addPathDefinition("/mind-mark/file/upload", "authc"); // 需要登录
+        chainDefinition.addPathDefinition("/mind-mark/file/delete/**", "authc"); // 需要登录
+        chainDefinition.addPathDefinition("/mind-mark/file/list/**", "authc"); // 需要登录
+
+        return chainDefinition;
+    }
+
 }

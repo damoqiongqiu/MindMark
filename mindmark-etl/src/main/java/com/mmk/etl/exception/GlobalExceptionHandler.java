@@ -1,7 +1,9 @@
 package com.mmk.etl.exception;
 
 import com.mmk.rbac.i18n.I18nUtil;
+import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -27,5 +29,11 @@ public class GlobalExceptionHandler {
                 new Object[]{maxFileSize}
         );
         return ResponseEntity.badRequest().body(message);
+    }
+
+    @ExceptionHandler(UnauthenticatedException.class)
+    public ResponseEntity<String> handleUnauthenticatedException(UnauthenticatedException e) {
+        String message = I18nUtil.getMessage("user.not.authenticated");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(message);
     }
 }
